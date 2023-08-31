@@ -1,0 +1,9 @@
+useDynLib(GMCB, .registration=TRUE)
+importFrom(Rcpp, evalCpp)
+exportPattern("^[[:alpha:]]+")
+
+S3method(gmcb, matrix)
+S3method(gmcb, gbridge)
+
+importFrom(mcmcse, mcse.multi)
+importFrom(matrixcalc, duplication.matrix, vec, vech)
