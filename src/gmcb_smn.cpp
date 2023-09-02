@@ -111,19 +111,19 @@ List gmcb_smn_debug(const arma::mat &y, const arma::mat &x, const arma::rowvec &
       arma::mat t_matrix_inv = arma::inv(trimatl(t_matrix)); // T^(-1)
       
       arma::vec gamma_im1 = arma::conv_to< arma::colvec >::from(gamma.row(i-1));
-      arma::mat d_matrix_inv_half = arma::diagmat(sqrt(1/gamma_im1)); // D^(-1/2)
+      // arma::mat d_matrix_inv_half = arma::diagmat(sqrt(1/gamma_im1)); // D^(-1/2)
       
-      arma::mat chol_prec = t_matrix.t() * d_matrix_inv_half;
+      arma::mat chol_prec = t_matrix.t() * arma::diagmat(sqrt(1/gamma_im1)); // T'D(-1/2)
       arma::mat t_kronecker_vt = kron(t_matrix, bsamp["x_vt"]);
       
       arma::vec lambda_im1 = arma::conv_to< arma::colvec >::from(lambda.row(i-1));
       arma::vec Delta_inv_diag = arma::pow((2*rep_gamma)/lambda_im1, 2/alpha_b(i-1)) / omega;
-      arma::mat Delta_inv = arma::diagmat(Delta_inv_diag);
+      // arma::mat Delta_inv = arma::diagmat(Delta_inv_diag);
       
-      arma::mat phi = kron(d_matrix_inv_half, bsamp["x_c"]);
+      arma::mat phi = kron(arma::diagmat(sqrt(1/gamma_im1)), bsamp["x_c"]);
       arma::vec alpha_bhat = vectorise(bsamp["uty"] * chol_prec);
       arma::mat t_kronecker_vt_kronecker_phi = kron(chol_prec, bsamp["vct"]);
-      arma::mat b_w_lhs = t_kronecker_vt_kronecker_phi.t() * Delta_inv * t_kronecker_vt_kronecker_phi;
+      arma::mat b_w_lhs = t_kronecker_vt_kronecker_phi.t() * arma::diagmat(Delta_inv_diag) * t_kronecker_vt_kronecker_phi;
       
       // sampling B
       arma::vec eta_delta(n*q);
@@ -143,7 +143,7 @@ List gmcb_smn_debug(const arma::mat &y, const arma::mat &x, const arma::rowvec &
       arma::mat inq(n*q, n*q, arma::fill::eye);
       arma::mat eta_w = solve(b_w_lhs + inq, alpha_bhat - eta_nu, arma::solve_opts::likely_sympd);
       
-      arma::vec eta_vec = eta_u + t_kronecker_vt * Delta_inv* t_kronecker_vt_kronecker_phi * eta_w;
+      arma::vec eta_vec = eta_u + t_kronecker_vt * arma::diagmat(Delta_inv_diag) * t_kronecker_vt_kronecker_phi * eta_w;
       arma::mat eta_mat = reshape(eta_vec, p, q);
       
       arma::vec sample_b = vectorise(bsamp["x_v"] * eta_mat * t_matrix_inv.t());
@@ -161,8 +161,8 @@ List gmcb_smn_debug(const arma::mat &y, const arma::mat &x, const arma::rowvec &
       arma::mat thetainv = kron(sigmainv, bsamp["xtx"]);
       
       arma::vec om_diag = omega % arma::pow(arma::conv_to< arma::colvec >::from(lambda.row(i-1)) / (2 * rep_gamma), 1/half_alpha_b);
-      arma::mat om_mat = diagmat(om_diag);
-      arma::mat phi = thetainv + om_mat;
+      // arma::mat om_mat = diagmat(om_diag);
+      arma::mat phi = thetainv + diagmat(om_diag);
 
       arma::mat phi_chol = arma::chol(phi); // upper triangular form
       arma::vec postmean_v = solve(trimatl(phi_chol.t()), thetainv * bsamp["b_ols_vec"]);
@@ -282,11 +282,11 @@ List gmcb_smn_debug(const arma::mat &y, const arma::mat &x, const arma::rowvec &
         
         arma::vec v = wc_gammac * u + z;
         arma::mat i_n(n, n, arma::fill::eye);
-        arma::mat phiinv_mat = diagmat(phiinv);
-        arma::mat w = solve(wc_gammac * phiinv_mat * wc_gammac.t() + i_n, zc_gammac - v, arma::solve_opts::likely_sympd);
+        // arma::mat phiinv_mat = arma::diagmat(phiinv);
+        arma::mat w = solve(wc_gammac * arma::diagmat(phiinv) * wc_gammac.t() + i_n, zc_gammac - v, arma::solve_opts::likely_sympd);
         
         delta.submat(i, pos_j_c(0), i, pos_j_c(pos_j_c.n_elem - 1)) = 
-          arma::conv_to< arma::rowvec >::from(u + phiinv_mat * wc_gammac.t() * w);
+          arma::conv_to< arma::rowvec >::from(u + arma::diagmat(phiinv) * wc_gammac.t() * w);
         
         // indexing for saving the debugging random variates
         arma::uvec npos1 = pos[n-1]; // to re-index, find the element of list pos that corresponds to n + 1 - this index is n in R, so n - 1 in C++
@@ -300,10 +300,10 @@ List gmcb_smn_debug(const arma::mat &y, const arma::mat &x, const arma::rowvec &
         
         arma::vec gammacphi = gamma(i-1,c) * epsilon_c % arma::pow(tau_c / (2.0 * gamma(i-1,c)), 2.0/alpha_d(i-1));
         
-        arma::mat gammacphi_mat = diagmat(gammacphi);
+        // arma::mat gammacphi_mat = arma::diagmat(gammacphi);
         
-        arma::mat wctwc;
-        arma::vec wctzc;
+        arma::mat wctwc(c - 1, c - 1);
+        arma::vec wctzc(c - 1);
         if (p < n) {
           
           wctwc = bsamp["yty"].submat(0, 0, c-1, c-1) - bsamp["ytx"].rows(0, c-1) * b_mat.cols(0, c-1) -
@@ -321,10 +321,10 @@ List gmcb_smn_debug(const arma::mat &y, const arma::mat &x, const arma::rowvec &
           
         }
         
-        arma::mat postcond_prec_mat = wctwc + gammacphi_mat;
-        arma::mat postcond_prec_chol = chol(postcond_prec_mat); // upper triangular form
-        arma::vec postcond_mean_v = solve(trimatl(postcond_prec_chol.t()), wctzc);
-        arma::vec postcondmean = solve(trimatu(postcond_prec_chol), postcond_mean_v);
+        arma::mat postcond_prec_mat = wctwc + arma::diagmat(gammacphi);
+        arma::mat postcond_prec_chol = arma::chol(postcond_prec_mat); // upper triangular form
+        arma::vec postcond_mean_v = arma::solve(trimatl(postcond_prec_chol.t()), wctzc);
+        arma::vec postcondmean = arma::solve(trimatu(postcond_prec_chol), postcond_mean_v);
         
         arma::vec randomvariates(c);
         for (int k = 0; k < c; k++) {
@@ -659,19 +659,19 @@ List gmcb_smn_nodebug(const arma::mat &y, const arma::mat &x, const arma::rowvec
       arma::mat t_matrix_inv = arma::inv(trimatl(t_matrix)); // T^(-1)
       
       arma::vec gamma_im1 = arma::conv_to< arma::colvec >::from(gamma.row(i-1));
-      arma::mat d_matrix_inv_half = arma::diagmat(sqrt(1/gamma_im1)); // D^(-1/2)
+      // arma::mat d_matrix_inv_half = arma::diagmat(sqrt(1/gamma_im1)); // D^(-1/2)
       
-      arma::mat chol_prec = t_matrix.t() * d_matrix_inv_half;
+      arma::mat chol_prec = t_matrix.t() * arma::diagmat(sqrt(1/gamma_im1)); // T'D^(-1/2)
       arma::mat t_kronecker_vt = kron(t_matrix, bsamp["x_vt"]);
       
       arma::vec lambda_im1 = arma::conv_to< arma::colvec >::from(lambda.row(i-1));
       arma::vec Delta_inv_diag = arma::pow((2*rep_gamma)/lambda_im1, 2/alpha_b(i-1)) / omega;
-      arma::mat Delta_inv = arma::diagmat(Delta_inv_diag);
+      // arma::mat Delta_inv = arma::diagmat(Delta_inv_diag);
       
-      arma::mat phi = kron(d_matrix_inv_half, bsamp["x_c"]);
+      arma::mat phi = kron(arma::diagmat(sqrt(1/gamma_im1)), bsamp["x_c"]);
       arma::vec alpha_bhat = vectorise(bsamp["uty"] * chol_prec);
       arma::mat t_kronecker_vt_kronecker_phi = kron(chol_prec, bsamp["vct"]);
-      arma::mat b_w_lhs = t_kronecker_vt_kronecker_phi.t() * Delta_inv * t_kronecker_vt_kronecker_phi;
+      arma::mat b_w_lhs = t_kronecker_vt_kronecker_phi.t() * arma::diagmat(Delta_inv_diag) * t_kronecker_vt_kronecker_phi;
       
       // sampling B
       arma::vec eta_delta(n*q);
@@ -691,7 +691,7 @@ List gmcb_smn_nodebug(const arma::mat &y, const arma::mat &x, const arma::rowvec
       arma::mat inq(n*q, n*q, arma::fill::eye);
       arma::mat eta_w = solve(b_w_lhs + inq, alpha_bhat - eta_nu, arma::solve_opts::likely_sympd);
       
-      arma::vec eta_vec = eta_u + t_kronecker_vt * Delta_inv* t_kronecker_vt_kronecker_phi * eta_w;
+      arma::vec eta_vec = eta_u + t_kronecker_vt * arma::diagmat(Delta_inv_diag) * t_kronecker_vt_kronecker_phi * eta_w;
       arma::mat eta_mat = reshape(eta_vec, p, q);
       
       arma::vec sample_b = vectorise(bsamp["x_v"] * eta_mat * t_matrix_inv.t());
@@ -705,8 +705,8 @@ List gmcb_smn_nodebug(const arma::mat &y, const arma::mat &x, const arma::rowvec
       arma::mat thetainv = kron(sigmainv, bsamp["xtx"]);
       
       arma::vec om_diag = omega % arma::pow(arma::conv_to< arma::colvec >::from(lambda.row(i-1)) / (2 * rep_gamma), 1/half_alpha_b);
-      arma::mat om_mat = diagmat(om_diag);
-      arma::mat phi = thetainv + om_mat;
+      // arma::mat om_mat = diagmat(om_diag);
+      arma::mat phi = thetainv + diagmat(om_diag);
       
       arma::mat phi_chol = arma::chol(phi); // upper triangular form
       arma::vec postmean_v = solve(trimatl(phi_chol.t()), thetainv * bsamp["b_ols_vec"]);
@@ -815,20 +815,20 @@ List gmcb_smn_nodebug(const arma::mat &y, const arma::mat &x, const arma::rowvec
         
         arma::vec v = wc_gammac * u + z;
         arma::mat i_n(n, n, arma::fill::eye);
-        arma::mat phiinv_mat = diagmat(phiinv);
-        arma::mat w = solve(wc_gammac * phiinv_mat * wc_gammac.t() + i_n, zc_gammac - v, arma::solve_opts::likely_sympd);
+        // arma::mat phiinv_mat = diagmat(phiinv);
+        arma::mat w = solve(wc_gammac * diagmat(phiinv) * wc_gammac.t() + i_n, zc_gammac - v, arma::solve_opts::likely_sympd);
         
         delta.submat(i, pos_j_c(0), i, pos_j_c(pos_j_c.n_elem - 1)) = 
-          arma::conv_to< arma::rowvec >::from(u + phiinv_mat * wc_gammac.t() * w);
+          arma::conv_to< arma::rowvec >::from(u + diagmat(phiinv) * wc_gammac.t() * w);
         
       } else {
         
         arma::vec gammacphi = gamma(i-1,c) * epsilon_c % arma::pow(tau_c / (2.0 * gamma(i-1,c)), 2.0/alpha_d(i-1));
         
-        arma::mat gammacphi_mat = diagmat(gammacphi);
+        // arma::mat gammacphi_mat = diagmat(gammacphi);
         
-        arma::mat wctwc;
-        arma::vec wctzc;
+        arma::mat wctwc(c - 1, c - 1);
+        arma::vec wctzc(c - 1);
         if (p < n) {
           
           wctwc = bsamp["yty"].submat(0, 0, c-1, c-1) - bsamp["ytx"].rows(0, c-1) * b_mat.cols(0, c-1) -
@@ -846,7 +846,7 @@ List gmcb_smn_nodebug(const arma::mat &y, const arma::mat &x, const arma::rowvec
           
         }
         
-        arma::mat postcond_prec_mat = wctwc + gammacphi_mat;
+        arma::mat postcond_prec_mat = wctwc + arma::diagmat(gammacphi);
         arma::mat postcond_prec_chol = chol(postcond_prec_mat); // upper triangular form
         arma::vec postcond_mean_v = solve(trimatl(postcond_prec_chol.t()), wctzc);
         arma::vec postcondmean = solve(trimatu(postcond_prec_chol), postcond_mean_v);

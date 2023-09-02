@@ -65,15 +65,15 @@ arma::mat sigmainv_calc_mh(NumericVector &delta, NumericVector &gamma,
   
   // construct D^(-1)
   arma::vec gamma_arma = as<arma::vec>(gamma);
-  arma::mat d = diagmat(gamma_arma);
-  arma::mat dinv = diagmat(1/gamma_arma);
+  // arma::mat d = diagmat(gamma_arma);
+  // arma::mat dinv = diagmat(1/gamma_arma);
   
   arma::mat out(q, q);
   if (cov) { // return covariance matrix
     arma::mat u = arma::inv(trimatl(unit_t));
-    out = u * d * u.t(); 
+    out = u * arma::diagmat(gamma_arma) * u.t(); 
   } else { // return precision matrix
-    out = unit_t.t() * dinv * unit_t;
+    out = unit_t.t() * arma::diagmat(1/gamma_arma) * unit_t;
   }
   return out;
 }

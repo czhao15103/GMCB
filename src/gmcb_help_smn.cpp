@@ -73,16 +73,16 @@ arma::mat sigmainv_calc_smn(arma::vec &delta, arma::vec &gamma, bool cov) {
   int q = gamma.n_elem;
   arma::mat unit_t = delta_to_matrix_inner_smn(delta, q); //T
   
-  // construct D^(-1)
-  arma::mat d = diagmat(gamma);
-  arma::mat dinv = diagmat(1/gamma);
+  // // construct D^(-1)
+  // arma::mat d = arma::diagmat(gamma);
+  // arma::mat dinv = arma::diagmat(1/gamma);
   
   arma::mat out(q, q);
   if (cov) { // return covariance matrix
     arma::mat u = arma::inv(trimatl(unit_t));
-    out = u * d * u.t(); 
+    out = u * arma::diagmat(gamma) * u.t(); 
   } else { // return precision matrix
-    out = unit_t.t() * dinv * unit_t;
+    out = unit_t.t() * arma::diagmat(1/gamma) * unit_t;
   }
   return out;
 }
@@ -204,7 +204,7 @@ std::map<std::string,arma::mat> b_compute(int p, int q, int n, const arma::mat &
     arma::vec x_d;
     svd(x_u, x_d, x_v, x);
     arma::mat x_vt = x_v.t();
-    arma::mat x_psi = diagmat(x_d);
+    arma::mat x_psi = arma::diagmat(x_d);
     arma::mat x_c = resize(x_psi, n, p);
     
     
