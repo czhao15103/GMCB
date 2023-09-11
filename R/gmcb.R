@@ -412,7 +412,7 @@ gmcb.matrix <- function(y, x = NULL,
       seconds.per.step[t] <- seconds.per.step[t]/3600 # convert to hours
     } else {
       units.per.step[t] <- " days"
-      seconds.per.step[t] <- seconds.per.step[t]/3600 # convert to days
+      seconds.per.step[t] <- seconds.per.step[t]/86400 # convert to days
     }
   }
   timing <- paste0(round(seconds.per.step, digits = 4), units.per.step)
