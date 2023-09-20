@@ -539,7 +539,7 @@ List gmcb_mh_nodebug(const arma::mat &y, const arma::mat &x, const NumericVector
   lambda(0, _) = rep(NA_REAL, pq); // R version does not specify a starting value since it is not necessary
   b(0, _) = b_init;
   alpha_b(0) = alpha_b_init;
-  tau(0, _) = rep(NA_REAL, pq); // R version does not specify a starting value since it is not necessary
+  tau(0, _) = rep(NA_REAL, lowertcount); // R version does not specify a starting value since it is not necessary
   delta(0, _) = d_init;
   gamma(0, _) = gamma_init;
   alpha_d(0) = alpha_d_init;
