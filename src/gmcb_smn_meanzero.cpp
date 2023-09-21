@@ -8,14 +8,16 @@ using namespace Rcpp;
 // with debugging output
 // [[Rcpp::export]]
 List gmcb_smn_meanzero_debug(const arma::mat &y, 
-                    const arma::rowvec &d_init, const arma::rowvec &gamma_init, 
-                    const double &alpha_d_init,
-                    const arma::rowvec &tau_init,
-                    const arma::vec &gamma_prior, 
-                    const arma::vec &alpha_prior, 
-                    const arma::mat &tau_prior, const int &iter, 
-                    const double &alpha_d_scale, 
-                    const List &pos) {
+                             const arma::rowvec &d_init, 
+                             const arma::rowvec &gamma_init, 
+                             const double &alpha_d_init,
+                             const arma::rowvec &tau_init,
+                             const arma::vec &gamma_prior, 
+                             const arma::vec &alpha_prior, 
+                             const arma::mat &tau_prior, 
+                             const int &iter, 
+                             const double &alpha_d_scale, 
+                             const List &pos) {
   
   Timer timer;
   timer.step("start"); // timer start
@@ -331,14 +333,16 @@ List gmcb_smn_meanzero_debug(const arma::mat &y,
 // no debug output
 // [[Rcpp::export]]
 List gmcb_smn_meanzero_nodebug(const arma::mat &y, 
-                      const arma::rowvec &d_init, const arma::rowvec &gamma_init, 
-                      const double &alpha_d_init,
-                      const arma::rowvec &tau_init,
-                      const arma::vec &gamma_prior, 
-                      const arma::vec &alpha_prior, 
-                      const arma::mat &tau_prior, const int &iter, 
-                      const double &alpha_d_scale, 
-                      const List &pos) {
+                               const arma::rowvec &d_init, 
+                               const arma::rowvec &gamma_init, 
+                               const double &alpha_d_init,
+                               const arma::rowvec &tau_init,
+                               const arma::vec &gamma_prior, 
+                               const arma::vec &alpha_prior, 
+                               const arma::mat &tau_prior, 
+                               const int &iter, 
+                               const double &alpha_d_scale, 
+                               const List &pos) {
   
   Timer timer;
   timer.step("start"); // timer start

@@ -11,13 +11,16 @@ using namespace Rcpp;
 // debugging output
 // [[Rcpp::export]]
 List gmcb_mh_meanzero_debug(const arma::mat &y, 
-                   const NumericVector &d_init, const NumericVector &gamma_init, 
-                   const double &alpha_d_init, const NumericVector &gamma_prior, 
-                   const NumericVector &alpha_prior, 
-                   const NumericMatrix &tau_prior, const int &iter, 
-                   const NumericVector &d_scale,
-                   const double &alpha_d_scale, 
-                   const List &pos) {
+                            const NumericVector &d_init, 
+                            const NumericVector &gamma_init, 
+                            const double &alpha_d_init, 
+                            const NumericVector &gamma_prior, 
+                            const NumericVector &alpha_prior, 
+                            const NumericMatrix &tau_prior, 
+                            const int &iter, 
+                            const NumericVector &d_scale,
+                            const double &alpha_d_scale, 
+                            const List &pos) {
   
   Timer timer;
   timer.step("start"); // timer start
@@ -300,13 +303,16 @@ List gmcb_mh_meanzero_debug(const arma::mat &y,
 // no debugging output
 // [[Rcpp::export]]
 List gmcb_mh_meanzero_nodebug(const arma::mat &y, 
-                     const NumericVector &d_init, const NumericVector &gamma_init, 
-                     const double &alpha_d_init, const NumericVector &gamma_prior, 
-                     const NumericVector &alpha_prior, 
-                     const NumericMatrix &tau_prior, const int &iter, 
-                     const NumericVector &d_scale,
-                     const double &alpha_d_scale, 
-                     const List &pos) {
+                              const NumericVector &d_init, 
+                              const NumericVector &gamma_init, 
+                              const double &alpha_d_init, 
+                              const NumericVector &gamma_prior, 
+                              const NumericVector &alpha_prior, 
+                              const NumericMatrix &tau_prior, 
+                              const int &iter, 
+                              const NumericVector &d_scale,
+                              const double &alpha_d_scale, 
+                              const List &pos) {
   Timer timer;
   timer.step("start"); // timer start
   
