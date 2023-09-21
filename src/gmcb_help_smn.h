@@ -16,6 +16,8 @@ arma::mat sigmainv_calc_smn(arma::vec &delta, arma::vec &gamma, bool cov);
 std::map<std::string,arma::mat> debugmatrices(int p, int q, int n, int iter, 
                                               const Rcpp::List &pos);
 
+std::map<std::string,arma::mat> debugmatrices_meanzero(int q, int n, int iter, const Rcpp::List &pos);
+
 std::map<std::string,arma::mat> b_compute(int p, int q, int n, const arma::mat &x, 
                                           const arma::mat &y);
   

@@ -229,6 +229,43 @@ double delta_logpostcond_direct(int c, int j, NumericVector deltac, double delta
   return l2term + prior_term;
 }  
 
+// log posterior conditional for delta_c
+double delta_meanzero_logpostcond(int c, int j, NumericVector deltac, double deltacj,
+                                  const arma::mat &yctyc, const arma::mat &yctycm1, 
+                                  const arma::mat &ycm1tycm1,
+                                  double gammac, double alphad, double taucj) {
+  
+  // note that the c, j are C++ indices
+  
+  // convert to arma objects for computation
+  deltac(j) = deltacj;
+  arma::colvec deltac_arma(deltac.begin(), deltac.size(), false); 
+  
+  double l2term = -0.5/gammac * arma::accu(yctyc + deltac_arma.t() * ycm1tycm1 * deltac_arma 
+                                             - 2.0 * yctycm1 * deltac_arma);
+  double prior_term = -0.5/gammac * taucj * std::pow(std::abs(deltacj), alphad);
+  
+  return l2term + prior_term;
+}  
+
+// log posterior conditional for delta_c - direct calculation
+double delta_meanzero_logpostcond_direct(int c, int j, NumericVector deltac, double deltacj,
+                                         const arma::mat &y, 
+                                         double gammac, double alphad, double taucj) {
+  
+  // note that the c, j are C++ indices
+  
+  // convert to arma objects for computation
+  deltac(j) = deltacj;
+  arma::colvec deltac_arma(deltac.begin(), deltac.size(), false); 
+  
+  double l2term = -0.5/gammac * arma::accu(arma::square(y.col(c) - y.cols(0, c - 1) * deltac_arma));
+  
+  double prior_term = -0.5/gammac * taucj * std::pow(std::abs(deltacj), alphad);
+  
+  return l2term + prior_term;
+}  
+
 std::map<std::string,arma::mat> mh_precompute(int p, int q, int n, const arma::mat &x, 
                                               const arma::mat &y) {
   std::map<std::string, arma::mat>m;

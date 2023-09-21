@@ -3,7 +3,6 @@ using namespace Rcpp;
 
 // Taken from Dirk Eddelbuettel's answer here: 
 // https://stackoverflow.com/questions/28442582/reproducing-r-rep-with-the-times-argument-in-c-and-rcpp
-// [[Rcpp::export]]
 arma::vec rep_times_smn(arma::vec x, arma::vec y) {
   int n = y.size();
   arma::vec out(sum(y));
@@ -131,6 +130,55 @@ std::map<std::string,arma::mat> debugmatrices(int p, int q, int n, int iter, con
     arma::mat b_z(iter, p*q);
     m.insert(std::pair<std::string, arma::mat>("b_z", b_z));
   }
+  
+  if (q > n) { 
+    IntegerVector qseq = Rcpp::seq_len(q - 1) + rep(1, q - 1);
+    
+    LogicalVector index_greater_n(q - 1);
+    for (int j = 0; j < q - 1; j++) {
+      index_greater_n(j) = qseq(j) > n;
+    }
+    List pos_q_greater_n = pos[index_greater_n];
+    List pos_c_less_n = pos[!index_greater_n];
+    
+    double num_indices_new_pos = 0;
+    for (int j = 0; j < pos_q_greater_n.length(); j++) {
+      IntegerVector posc = pos_q_greater_n[j];
+      
+      num_indices_new_pos += posc.length();
+    }
+    
+    arma::mat delta_u(iter, num_indices_new_pos);
+    arma::mat delta_z(iter, n*pos_q_greater_n.length());
+    arma::mat delta_z_len(iter, q*(q-1)/2 - num_indices_new_pos);
+    
+    m.insert(std::pair<std::string, arma::mat>("delta_u_gn", delta_u));
+    m.insert(std::pair<std::string, arma::mat>("delta_z_gn", delta_z));
+    m.insert(std::pair<std::string, arma::mat>("delta_z_len", delta_z_len));
+  } else {
+    arma::mat delta_z(iter, q*(q-1)/2);
+    m.insert(std::pair<std::string, arma::mat>("delta_z", delta_z));
+  }
+  return(m);
+}
+
+std::map<std::string,arma::mat> debugmatrices_meanzero(int q, int n, int iter, const List &pos) {
+  // always present when debugging
+  arma::mat epsilon_variates(iter, q*(q-1)/2);
+  arma::mat tau_variates(iter, q*(q-1)/2);
+  
+  arma::mat alpha_d_previous_state(iter, 1);
+  arma::mat alpha_d_proposal(iter, 1);
+  arma::mat alpha_d_log_ratio(iter, 1);
+  arma::mat alpha_d_u(iter, 1);
+  
+  std::map<std::string, arma::mat>m;
+  m.insert(std::pair<std::string, arma::mat>("epsilon_variates", epsilon_variates));
+  m.insert(std::pair<std::string, arma::mat>("tau_variates", tau_variates));
+  m.insert(std::pair<std::string, arma::mat>("alpha_d_previous_state", alpha_d_previous_state));
+  m.insert(std::pair<std::string, arma::mat>("alpha_d_proposal", alpha_d_proposal));
+  m.insert(std::pair<std::string, arma::mat>("alpha_d_log_ratio", alpha_d_log_ratio));
+  m.insert(std::pair<std::string, arma::mat>("alpha_d_u", alpha_d_u));
   
   if (q > n) { 
     IntegerVector qseq = Rcpp::seq_len(q - 1) + rep(1, q - 1);

@@ -38,6 +38,15 @@ double delta_logpostcond_direct(int c, int j, Rcpp::NumericVector deltac, double
                                 arma::mat &b,
                                 double gammac, double alphad, double taucj);
 
+double delta_meanzero_logpostcond(int c, int j, Rcpp::NumericVector deltac, double deltacj,
+                                  const arma::mat &yctyc, const arma::mat &yctycm1, 
+                                  const arma::mat &ycm1tycm1,
+                                  double gammac, double alphad, double taucj);
+
+double delta_meanzero_logpostcond_direct(int c, int j, Rcpp::NumericVector deltac, double deltacj,
+                                         const arma::mat &y, 
+                                         double gammac, double alphad, double taucj);
+
 std::map<std::string,arma::mat> mh_precompute(int p, int q, int n, const arma::mat &x, 
                                               const arma::mat &y);
   
