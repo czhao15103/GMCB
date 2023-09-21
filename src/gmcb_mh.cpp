@@ -483,10 +483,15 @@ List gmcb_mh_debug(const arma::mat &y, const arma::mat &x, const NumericVector &
                                 Named("alpha_d_log_ratio") = alpha_d_log_ratio,
                                 Named("alpha_d_u") = alpha_d_u);
   
-  List acceptances = List::create(Named("b_accept_rate") = Rcpp::colMeans(b_accept),
-                                  Named("alpha_b_accept_rate") = Rcpp::mean(alpha_b_accept),
-                                  Named("delta_accept_rate") = Rcpp::colMeans(delta_accept),
-                                  Named("alpha_d_accept_rate") = Rcpp::mean(alpha_d_accept));
+  NumericVector b_accept_rate = Rcpp::colMeans(b_accept);
+  double alpha_b_accept_rate = Rcpp::colMeans(alpha_b_accept);
+  NumericVector delta_accept_rate = Rcpp::colMeans(delta_accept);
+  double alpha_d_accept_rate = Rcpp::colMeans(alpha_d_accept);
+  
+  List acceptances = List::create(Named("b_accept_rate") = b_accept_rate,
+                                  Named("alpha_b_accept_rate") = alpha_b_accept_rate,
+                                  Named("delta_accept_rate") = delta_accept_rate,
+                                  Named("alpha_d_accept_rate") = alpha_d_accept_rate);
   
   NumericVector res(timer);
   for (int i = 0; i < res.size(); i++) {
@@ -909,10 +914,15 @@ List gmcb_mh_nodebug(const arma::mat &y, const arma::mat &x, const NumericVector
                            Named("alpha_b") = alpha_b, 
                            Named("alpha_d") = alpha_d);
   
-  List acceptances = List::create(Named("b_accept_rate") = Rcpp::colMeans(b_accept),
-                                  Named("alpha_b_accept_rate") = Rcpp::mean(alpha_b_accept),
-                                  Named("delta_accept_rate") = Rcpp::colMeans(delta_accept),
-                                  Named("alpha_d_accept_rate") = Rcpp::mean(alpha_d_accept));
+  NumericVector b_accept_rate = Rcpp::colMeans(b_accept);
+  double alpha_b_accept_rate = Rcpp::colMeans(alpha_b_accept);
+  NumericVector delta_accept_rate = Rcpp::colMeans(delta_accept);
+  double alpha_d_accept_rate = Rcpp::colMeans(alpha_d_accept);
+  
+  List acceptances = List::create(Named("b_accept_rate") = b_accept_rate,
+                                  Named("alpha_b_accept_rate") = alpha_b_accept_rate,
+                                  Named("delta_accept_rate") = delta_accept_rate,
+                                  Named("alpha_d_accept_rate") = alpha_d_accept_rate);
   
   NumericVector res(timer);
   for (int i = 0; i < res.size(); i++) {
