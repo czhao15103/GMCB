@@ -96,6 +96,50 @@ nuisance.init <- function(p, q, lambda.prior, tau.prior, alpha.prior,
               alpha.b.init = alpha.b.init, alpha.d.init = alpha.d.init))
 }
 
+nuisance.init.meanzero <- function(q, tau.prior, alpha.prior, delta.large = TRUE) {
+  
+  # error checks
+  stopifnot(q >= 2)
+  stopifnot(all(tau.prior > 0))
+  stopifnot(all(alpha.prior > 0))
+  stopifnot(alpha.prior[1] < alpha.prior[2])
+  stopifnot(is.logical(delta.large))
+  
+  if ((is.null(dim(tau.prior)) & length(tau.prior) != 4) | !all(dim(tau.prior) == c(4, q*(q-1)/2))) {
+    stop("tau.prior must either be a vector of length 4 or be a 4 by q(q-1)/2 matrix")
+  }
+  
+  if (is.null(dim(tau.prior))) {
+    if (delta.large) {
+      # generate tau values from first component of prior, which has small mean and variance
+      
+      tau.init <- rgamma(q*(q-1)/2, shape = tau.prior[1], rate = tau.prior[2])
+      
+    } else {
+      # generate tau values from second component of prior, which has large mean and variance
+      
+      tau.init <- rgamma(q*(q-1)/2, shape = tau.prior[3], rate = tau.prior[4])
+      
+    }
+  } else {
+    if (delta.large) {
+      # generate tau values from first component of prior, which has small mean and variance
+      
+      tau.init <- rgamma(q*(q-1)/2, shape = tau.prior[1,], rate = tau.prior[2,])
+      
+    } else {
+      # generate tau values from second component of prior, which has large mean and variance
+      
+      tau.init <- rgamma(q*(q-1)/2, shape = tau.prior[3,], rate = tau.prior[4,])
+      
+    }
+  }
+  
+  alpha.d.init <- runif(1, alpha.prior[1], alpha.prior[2])
+  
+  return(list(tau.init = tau.init, alpha.d.init = alpha.d.init))
+}
+
 #### OLS regression initialization for just covariance parameters ####
 
 ols.covariance <- function(y) {
