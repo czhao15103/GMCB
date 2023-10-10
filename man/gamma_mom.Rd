@@ -5,51 +5,44 @@
 Eliciting a prior for gamma
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+Elicits an inverse Gamma prior using a method of moments estimator.
 }
 \usage{
-gamma.mom(x)
+gamma.mom(gamma)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{x}{
-%%     ~~Describe \code{x} here~~
+  \item{gamma}{
+Vector of initializing values.
 }
 }
-\details{
-%%  ~~ If necessary, more details than the description above ~~
-}
+%\details{
+%Computes the shape and rate parameter of an inverse Gamma prior
+%}
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+A vector of length two. The first component is the shape parameter of 
+the prior, and the second is the rate parameter.
 }
-\references{
+%\references{
 %% ~put references to the literature/web site here ~
-}
+%}
 \author{
-%%  ~~who you are~~
+\packageAuthor{GMCB}
 }
-\note{
+%\note{
 %%  ~~further notes~~
-}
+%}
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
-\seealso{
+%\seealso{
 %% ~~objects to See Also as \code{\link{help}}, ~~~
-}
+%}
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
 
-## The function is currently defined as
-function (x) 
-{
-  }
+gamma <- rgamma(20)
+gamma.prior <- gamma.mom(gamma)
+
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory (show via RShowDoc("KEYWORDS")):
