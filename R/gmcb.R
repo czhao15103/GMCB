@@ -23,9 +23,7 @@ gmcb.matrix <- function(y, x = NULL, meanzero = FALSE,
   
   #### error checking for response and algorithm choice ####
   
-  if (!(algorithm %in% c("MH", "SMN"))) {
-    stop("algorithm must be either 'MH' or 'SMN'")
-  }
+  algorithm <- match.arg(algorithm)
   
   if (!("matrix" %in% class(y)))
     stop("y must be a matrix")
