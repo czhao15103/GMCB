@@ -40,9 +40,9 @@ A list with the following elements:
   \item{asymp.cov}{the estimated asymptotic covariance matrix}
 }
 \references{
-Flegal, J. M., Hughes, J., Vats, D., & Dai, N. (2020). Mcmcse: Monte carlo standard
-errors for mcmc [R package version 1.4-1]. Riverside, CA, Denver, CO, Coventry,
-UK, Minneapolis, MN.
+Flegal, J. M., Hughes, J., Vats, D., Dai, N., Gupta, K., & Maji, U. (2021). mcmcse:
+Monte Carlo standard errors for MCMC [R package version 1.5-0]. Riverside, CA,
+Kanpur, India.
 
 Vats, D., Flegal, J. M., & Jones, G. L. (2019). Multivariate output analysis for Markov
 chain Monte Carlo. \emph{Biometrika}, 106 (2), 321–337. \url{https://doi.org/10.1093/biomet/asz002}
