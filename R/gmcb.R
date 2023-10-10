@@ -316,7 +316,7 @@ gmcb.matrix <- function(y, x = NULL, meanzero = FALSE,
     } else {
       # naive initialization for both B and delta
       
-      init <- init_naive(y, x, priors$lambda, priors$tau, priors$alpha)
+      init <- init_naive(y, p, priors$lambda, priors$tau, priors$alpha)
       
       initial.values <- list(b = init$b.init, 
                              delta = init$delta.init,
