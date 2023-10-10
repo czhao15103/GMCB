@@ -216,11 +216,9 @@ ols.init <- function(y, x) {
 
 #### naive initialization ####
 
-init_naive <- function(y, x, lambda.prior, tau.prior, alpha.prior) {
-  p <- ncol(x)
+init_naive <- function(y, p, lambda.prior, tau.prior, alpha.prior) {
   q <- ncol(y)
   
-  stopifnot(nrow(y) == nrow(x))
   stopifnot(q >= 2)
   
   b.init <- rep(0, p*q)
