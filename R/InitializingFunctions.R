@@ -337,7 +337,7 @@ init_naive <- function(y, x, lambda.prior, tau.prior, alpha.prior) {
 
 # If there is no mean structure, the sequence of q regressions is independent
 init_freqbridge_nocovariates <- function(y, alpha.prior, nfolds = 5, nalpha = 10, nlambda = 20,
-                                         cores = 4) {
+                                         cores = 4, seed = NULL) {
   n <- nrow(y)
   q <- ncol(y)
   
@@ -350,6 +350,13 @@ init_freqbridge_nocovariates <- function(y, alpha.prior, nfolds = 5, nalpha = 10
   # full set of parameter values
   pars <- expand.grid(alpha.grid, lambda.grid)
   colnames(pars) <- c("alpha", "lambda")
+  
+  # set seed if provided
+  if (!is.null(seed)) {
+    set.seed(seed)
+    seedset <- .Random.seed
+    assign(".Random.seed", seedset, .GlobalEnv)
+  }
   
   # indices for split
   folds <- kfoldsplit(n, nfolds)
