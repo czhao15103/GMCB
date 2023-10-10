@@ -6,51 +6,116 @@ Initializing the covariance parameters in the absence of covariates with
 frequentist bridge regression
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+Uses a sequence of frequentist bridge regressions to initialize the covariance 
+parameters. This function assumes a non-zero mean.
+The regularization parameters and the penalty exponents corresponding to the
+mean and covariance are assumed to be the same and selected using k-fold 
+cross-validation.
 }
 \usage{
-init_freqbridge_nocovariates(x)
+init_freqbridge_nocovariates(y, alpha.prior, nfolds = 5, nalpha = 10, 
+                             nlambda = 20, cores = 4, seed = NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{x}{
-%%     ~~Describe \code{x} here~~
+  \item{y}{
+response matrix with dimensions \eqn{n \times q}. Must have \eqn{q \ge 2}. 
+}
+  \item{alpha.prior}{
+vector of length two giving the minimum and maximum values for the uniform prior
+on the penalty exponents.
+}
+  \item{nfolds}{
+scalar specifying how many folds to use for k-fold cross-validation. 
+Default value is 5.
+}
+  \item{nalpha}{
+scalar specifying the number of penalty exponent values to consider. 
+Default value is 10.
+}
+  \item{nlambdda}{
+scalar specifying the number of regularization values to consider. 
+Default value is 20.
+}
+  \item{cores}{
+scalar specifying the number of cores to use for parallelization. 
+Set to 1 for no parallelization. Default value is 4.
+}
+  \item{seed}{
+optional scalar passed to \code{set.seed}. Default is \code{NULL}.
 }
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
+This function considers \code{nalpha}\eqn{\cdot}\code{nlambda} sets of parameters
+for the regularization parameters and penalty exponent parameters in the GMCB
+model.  
+
+The candidate penalty exponent values are a sequence of equally spaced
+values starting from \code{alpha.prior[1]} with maximal end value 
+\code{alpha.prior[2]}. The candidate regularization parameter values are
+given by \code{2^((1:nlambda) - 6)}, which was used by Park and Yoon (2011)
+in their simulations.
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+A list including the following componets:
+  \item{delta.init}{a vector of length \emph{q(q-1)/2}, the initializing values
+                    for the covariance parameters with interpretations as 
+                    regression coefficients.}
+  \item{gamma.init}{a vector of length \emph{q}, the initializing values for 
+                    the covariance parameters with interpretations as 
+                    regression error variances.}
+  \item{gamma.prior}{a vector of length two, giving the shape and rate 
+                     parameters for the inverse Gamma prior on the 
+                     covariance parameters with interpretations as 
+                     regression error variances.}
+  \item{alpha.b.init}{scalar, the initializing value for the penalty exponent
+                      for the mean.}
+  \item{alpha.d.init}{scalar, the initializing value for the penalty exponent
+                      for the covariance parameters.}
+  \item{lambda.init}{a vector of length \emph{q}, the initializing values for the 
+                     regularization parameters for the mean.}
+  \item{tau.init}{a vector of length \emph{q(q-1)/2}, the initializing values for the 
+                  regularization parameters for the covariance parameters.}
+  \item{cvresults}{matrix of the k-fold cross-validation mean squared errors
+                   for each set of candidate parameter values.}
 }
 \references{
-%% ~put references to the literature/web site here ~
+  Park, C. and Yoon, Y. J. (2011) Bridge regression: Adaptivity and group selection. 
+  \emph{Journal of Statistical Planning and Inference} \bold{141} 3506--3519.
+  
+  Yuzbasi B, Arashi M, Akdeniz F (2020). _rbridge: Restricted Bridge Estimation_. R package version 1.0.2,
+  <https://CRAN.R-project.org/package=rbridge>.
 }
 \author{
-%%  ~~who you are~~
+Bahadir Yuzbasi, Mohammad Arashi, and Fikri Akdeniz wrote the C++ 
+source code for computing the frequentist bridge. \packageAuthor{GMCB} 
+wrote the wrapper function that adapts the frequentist bridge for 
+initializing the GMCB model.
 }
 \note{
-%%  ~~further notes~~
+It is recommended that \code{nalpha}\eqn{\cdot}\code{nlambda} not be too large
+to avoid long computation times. Even with the default values and parallelization, 
+runtime can be extensive if \emph{q} is large.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+\code{\link{init_naive}}, \code{\link{nuisance_init}}, 
+\code{\link{nuisance_init_meanzero}}, \code{\link{ols_covariance}},
+\code{\link{ols_init}}
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
 
-## The function is currently defined as
-function (x) 
-{
-  }
+library(mvtnorm)
+y.cov <- toeplitz(c(1, 0.7, 0.7))
+y <- rmvnorm(100, mean = rep(0, 3), sigma = y.cov)
+
+alpha.prior <- c(0.5, 4)
+
+initialize <- init_freqbridge_nocovariates(y = y, alpha.prior = alpha.prior,
+                                           cores = 2, seed = 1045)
+
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory (show via RShowDoc("KEYWORDS")):
