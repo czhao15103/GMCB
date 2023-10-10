@@ -10,13 +10,13 @@ Simultaneous mean and covariance estimation under the generalized mean-covarianc
 Runs either the GMCB-MH or GMCB-SMN algorithm on input data and returns the posterior samples.
 }
 \usage{
-gmcb(y, x = NULL, initial.values = NULL, priors = NULL, rw.scale, iter = 1e4, 
+gmcb(y, x = NULL, meanzero = FALSE, initial.values = NULL, priors, rw.scale, iter = 1e4, 
      algorithm = c("MH", "SMN"), debug = FALSE)
                  
-\method{gmcb}{matrix}(y, x = NULL, initial.values = NULL, priors = NULL, rw.scale, 
+\method{gmcb}{matrix}(y, x = NULL, meanzero = FALSE, initial.values = NULL, priors, rw.scale, 
                       iter = 1e4, algorithm = c("MH", "SMN"), debug = FALSE)
 
-\method{gmcb}{gbridge}(y, x = NULL, initial.values = NULL, priors = NULL, rw.scale, 
+\method{gmcb}{gbridge}(y, x = NULL, meanzero = FALSE, initial.values = NULL, priors, rw.scale, 
                        iter = 1e4, algorithm = c("MH", "SMN"), debug = FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
@@ -25,19 +25,21 @@ gmcb(y, x = NULL, initial.values = NULL, priors = NULL, rw.scale, iter = 1e4,
 response matrix with dimensions \eqn{n \times q}. Must have \eqn{q \ge 2}. 
 }
   \item{x}{
-optional covariate matrix with dimensions \eqn{n \times p}. If not provided, function will use an intercept of ones.
+optional covariate matrix with dimensions \eqn{n \times p}, see `Details.`
+}
+  \item{meanzero}{
+logical. Default to \code{meanzero = FALSE}. If \code{meanzero = TRUE}, the argument 
+\code{x} is ignored, and the model is fit assuming the mean is zero, see `Details.`
 }
   \item{initial.values}{
-optional list with named elements. If \code{algorithm = MH}, must include named elements
-\code{b}, \code{delta}, \code{gamma}, \code{alpha.b}, \code{alpha.d}. If \code{algorithm = SMN}, must include named elements \code{b}, \code{delta}, \code{gamma}, \code{lambda}, \code{tau}, \code{alpha.b}, \code{alpha.d}.
+optional list with named elements used to initialize the Markov chain, see `Details.` 
 }
   \item{priors}{
-list with named elements \code{lambda}, \code{tau}, \code{alpha}. May also include
-optional named element \code{gamma}.
+list with named elements providing the necessary priors, see `Details.`
 }
   \item{rw.scale}{
-list with named elements giving the standard deviations of the normal proposals used for the Metropolis-Hastings updates. If \code{algorithm = MH}, must include named elements
-\code{b}, \code{delta}, \code{alpha.b}, \code{alpha.d}. If \code{algorithm = SMN}, must include named elements \code{alpha.b}, \code{alpha.d}
+list with named elements giving the standard deviations of the normal proposals used 
+for the Metropolis-Hastings updates, see `Details.`
 }
   \item{iter}{
 number of iterations. Default value is \code{1e4}.
@@ -47,13 +49,13 @@ logical. Default value is \code{FALSE}. If \code{TRUE}, returns the random varia
 generated during sampling as described below. 
 }
   \item{algorithm}{
-specifies the algorithm to run. Either \code{MH} or \code{SMN}.
+specifies the algorithm to run, either \code{MH} or \code{SMN}. Defaults to \code{MH}.
 }
 }
 \details{
   Let \emph{Y} be a vector of length \emph{q}, \emph{X} a vector length \emph{p}, \emph{B} a \eqn{p \times q}
   matrix, and \eqn{\Omega} a positive-definite \eqn{q \times q} matrix. Suppose that the distribution of
-  \emph{Y} is given by \eqn{N(B' X,\Omega^{-1})}, where \emph{B'} denotes the transpose of \emph{B}. 
+  \emph{Y} is given by \eqn{N(B'X,\Omega^{-1})}, where \emph{B'} denotes the transpose of \emph{B}. 
   
   Define the modified Cholesky decomposition of \eqn{\Omega^{-1}} to be
   \deqn{
@@ -62,16 +64,54 @@ specifies the algorithm to run. Either \code{MH} or \code{SMN}.
   where \emph{T} is a unit lower triangular matrix and \emph{D} is a diagonal
   matrix with positive entries. By reparameterizing the likelihood of \emph{Y} using
   this modified Cholesky decomposition, the problem of estimating \eqn{(B,\Omega)}
-  can be turned into estimating the regression coefficients and error variances of a
-  sequence of \emph{q} regressions.
+  can be turned into estimating the regression coefficients 
+  and error variances of a sequence of \emph{q} regressions (Pourahmadi, 2011).
   
   The generalized mean-covariance bridge (GMCB) prior uses the generalized bridge prior proposed
   by Xiang (2020) to model the parameters of the \emph{q} regressions. The posterior distribution
   under the GMCB prior can be sampled using either the GMCB-MH algorithm or the GMCB-SMN algorithm.
   
-  The details of the hierarchical model and the algorithms are included in the package 
-  vignette \emph{GMCB}, which can be accessed with 
-  \code{vignette("GMCB", "GMCB")}.
+  The arguments \code{x} and \code{meanzero} determine the mean structure estimated by
+  \code{gmcb}. While the distribution of \emph{Y} above is presented as depending on covariates,
+  the function can also perform estimation for the cases \eqn{Y\sim N(\mu,\Omega^{-1})} (\eqn{p = 1}) 
+  and \eqn{Y\sim N(0,\Omega^{-1})}. Setting \code{meanzero = TRUE} performs estimation for
+  \eqn{Y\sim N(0,\Omega^{-1})}, and the function ignores the argument \code{x}. If
+  \code{meanzero = FALSE} and \code{x} is not provided, the function defaults to estimation 
+  for \eqn{Y\sim N(\mu,\Omega^{-1})}. If \code{meanzero = FALSE} and \code{x} is provided,
+  the function performs estimation for \eqn{Y\sim N(B'X,\Omega^{-1})}.
+  
+  If the argument \code{initial.values} is not provided, the function chooses initializing
+  values based on the relative sizes of \emph{p}, \emph{q}, and \emph{n}. 
+  Parameters with interpretations as regression coefficients are initialized by the 
+  ordinary least squares (OLS) estimates when they exist and zero otherwise. Parameters 
+  with interpretations as regression error variances are initialized by the OLS estimates
+  when they exist and the sample variances of the columns of \code{Y} otherwise. The penalty
+  parameters and penalty exponent parameters are initialized from the provided priors. 
+  
+  The required elements for \code{initial.values}, \code{priors}, and \code{rw.scale}
+  depend on the mean structure being estimated, as well as the selected algorithm.
+  When \code{meanzero = FALSE},
+  \itemize{
+    \item \code{priors} must have named elements \code{lambda}, \code{tau}, and \code{alpha}.
+    The element \code{gamma} is optional; if excluded from the list provided to \code{gmcb},
+    the function will use the method of moments to specify the prior.
+    \item If \code{algorithm = MH}, 
+    \itemize{
+      \item \code{initial.values}, if provided, must have named elements 
+      \code{b}, \code{delta}, \code{gamma}, \code{alpha.b}, and \code{alpha.d}.
+      \item \code{rw.scale} must have named elements \code{b}, \code{delta}, \code{alpha.b}, 
+      and \code{alpha.d}
+    }
+    \item If \code{algorithm = SMN},
+    \itemize{
+      \item \code{initial.values}, if provided, must have named elements 
+      \code{b}, \code{delta}, \code{gamma}, \code{lambda}, \code{tau}, \code{alpha.b}, 
+      and \code{alpha.d}.
+      \item \code{rw.scale} must have named elements \code{alpha.b} and \code{alpha.d}
+    }
+  }
+  
+  The details of the hierarchical model and the algorithms will be made available.
 
   This function employs several ideas discussed in Geyer (2011). Users can start runs that pick up
   where previous runs ended by passing an object of class \code{gbridge} to the function, and the 
@@ -95,6 +135,7 @@ An object of class \code{gbridge}, which is a list including the following compo
                       if \code{algorithm = "MH"} and length 7 if \code{algorithm = "SMN"}.}
   \item{y}{the response matrix provided to the function.}
   \item{x}{the predictor matrix provided to the function.}
+  \item{meanzero}{logical provided to the function.}
   \item{initial.values}{the initializing values provided to the function. If none were 
                         provided, the default initializing values generated by the
                         function.}
@@ -102,50 +143,68 @@ An object of class \code{gbridge}, which is a list including the following compo
                 named \code{gamma}, the default prior generated by the function
                 is included as the element \code{gamma}.}
   \item{iter}{number of iterations provided to the function.}
-  \item{algorithm}{the algorithm name provided to the function}
-  \item{rw.scale}{the standard deviations provided to the function of the proposal distributions used for Metropolis-Hastings updates.}
-  \item{debug}{logical provided to the function}
+  \item{algorithm}{the algorithm name provided to the function.}
+  \item{rw.scale}{the standard deviations of the proposal distributions used for 
+  Metropolis-Hastings updates provided to the function.}
+  \item{debug}{logical provided to the function.}
   
 if \code{debug = TRUE}, the list \code{debug_out} is also included, which includes the random
-variates generated during sampling.
+variates generated during sampling. 
 }
 \references{
   Geyer, C. J. (2011) Introduction to MCMC. In \emph{Handbook of Markov Chain Monte Carlo}. Edited 
   by S. P. Brooks, A. E. Gelman, G. L. Jones, and X. L. Meng. Chapman & Hall/CRC, Boca Raton, FL, pp. 3--48.
   
+  Pourahmadi, M. (2011) Covariance Estimation: The GLM and Regularization 
+  Perspectives. \emph{Statistical Science} \bold{26}:3 369--387.
+  
   Xiang, D. (2020) \emph{Fully Bayesian penalized regression with a generalized bridge prior}.
-University of Minnesota
+  University of Minnesota.
 }
 \author{
-\packageAuthor{GMCB}
+The code for sampling an exponentially-tilted postive stable random variable was written by Marius Hofert and Martin Maechler. The rest of the algorithm was written by \packageAuthor{GMCB}.
 }
 \note{
-  The dimensions of \code{mu}, \code{lambda}, \code{gamma}, and \code{betas} differ depending on the 
-  class of the first argument. If the first argument is a matrix, \code{mu[1,]},  
-  \code{gamma[1,]}, and \code{betas[[1]]} are the initializing values passed to the function by the user,
-  and \code{lambda[1,]} is a vector of 1's that serves as a placeholder because no initializing value is 
-  needed. The remaining \code{iter} rows contain the samples.
-  When the first argument is an object of class \code{"cov.est"}, the initializing values are taken to be 
-  the final states from \code{cE}. To avoid redundancy if the user wanted to combine the output from multiple
-  chains run in sequence, the initializing values are excluded, so that \code{mu[1,]}, \code{lambda[1,]}, 
-  \code{gamma[1,]}, and \code{betas[[1]]} are the next set of samples, rather than the final state from the
-  previous chain.
+  The dimensions of \code{b}, \code{delta}, \code{lambda}, \code{tau}, \code{gamma}, 
+  \code{alpha.b}, and \code{alpha.d} differ depending on the class of the first argument. 
+  If \code{y} is a matrix, matrix (vector) output in the component \code{mcmc} will have
+  \code{iter + 1} rows (elements). The first row (element) of the matrices (vectors)
+  will be the initializing values. When \code{algorithm = MH}, the first row of 
+  \code{lambda} and \code{tau} will be \code{NA}, as initializing values are not required.
+  
+  If \code{y} has class \code{gbridge}, the initializing values are taken to be 
+  the final states from \code{y}. To avoid redundancy if the user wanted to combine 
+  the output a sequence of consecutive runs, the initializing values are excluded,
+  so that matrix (vector) output in the component \code{mcmc} will have
+  \code{iter} rows (elements).
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
-\seealso{
+%\seealso{
 %% ~~objects to See Also as \code{\link{help}}, ~~~
-}
+%}
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
+library(mvtnorm)
 
-## The function is currently defined as
-function (x) 
-{
-  }
+n <- 100
+p <- 5
+q <- 5
+
+rho <- 0.7
+
+x.mats <- matgen(p, rho, type = "AR")
+y.mats <- matgen(q, rho, type = "AR")
+
+x <- rmvnorm(n, mean = rep(0, p), sigma = x.mats$cov.mat)
+b <- matrix(rnorm(p*q), nrow = p)
+y <- x \%*\% b + rmvnorm(n, mean = rep(0, q), sigma = y.mats$cov.mat)
+
+out_nodebug <- gmcb(y, x)
+names(out_nodebug)
+
+out_debug <- gmcb(y, x, debug = TRUE)
+names(out_debug)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory (show via RShowDoc("KEYWORDS")):
