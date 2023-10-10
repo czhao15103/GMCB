@@ -271,7 +271,7 @@ init_naive <- function(y, x, lambda.prior, tau.prior, alpha.prior) {
 #   registerDoParallel(clus)
 #   
 #   for (k in 1:nfolds) {
-#     mse <- foreach(i = 1:nrow(pars), .combine = "c", .packages = c("Matrix", "gmcb")) %dorng% {
+#     mse <- foreach(i = 1:nrow(pars), .combine = "c", .packages = c("Matrix", "GMCB")) %dorng% {
 #       
 #       y.train <- y[-folds[[k]],]
 #       y.test <- y[folds[[k]],]
@@ -366,7 +366,7 @@ init_freqbridge_nocovariates <- function(y, alpha.prior, nfolds = 5, nalpha = 10
   registerDoParallel(clus)
   
   for (k in 1:nfolds) {
-    mse <- foreach(i = 1:nrow(pars), .combine = "c", .packages = c("Matrix", "gmcb")) %dorng% {
+    mse <- foreach(i = 1:nrow(pars), .combine = "c", .packages = c("Matrix", "GMCB")) %dorng% {
       
       train <- y[-folds[[k]],]
       test <- y[folds[[k]],]
