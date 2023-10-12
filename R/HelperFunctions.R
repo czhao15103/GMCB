@@ -1,7 +1,7 @@
 
 #### Convenience functions ####
 
-# a function that converts a q x q matrix to a vector of by stacking the
+# a function that converts a q x q matrix to a vector by stacking the
 # lower-triangular elements by row
 vech.row <- function(mat, keep.diag = FALSE) {
   # diag = FALSE does not keep the diagonals and returns a vector with length q(q-1)/2 
@@ -92,7 +92,7 @@ vech.list <- function(list) {
 #### General helper functions ####
 
 # function for generating CS, AR(1), and independent covariance matrices and their inverses
-matgen <- function(p, rho, sigma = 1, type) {
+matgen <- function(p, rho, sigma = 1, type = c("AR", "CS", "cI")) {
   # p = dimension
   # rho = correlation 
   # ignored if type = cI
@@ -101,10 +101,10 @@ matgen <- function(p, rho, sigma = 1, type) {
   # type = AR, CS, cI
   stopifnot(sigma > 0)
   stopifnot(p > 1)
-  stopifnot(abs(rho) <= 1)
-  stopifnot(type %in% c("AR", "CS", "cI"))
+  type <- match.arg(type)
   
   if (type == "AR") {
+    stopifnot(abs(rho) <= 1)
     cov.mat <- matrix(nrow = p, ncol = p)
     for (i in 1:p) {
       for (j in 1:p) {
@@ -130,6 +130,7 @@ matgen <- function(p, rho, sigma = 1, type) {
     }
     prec.mat <- 1/sigma[1] * prec.mat
   } else if (type == "CS") { 
+    stopifnot(abs(rho) <= 1)
     cov.mat <- matrix(rho, nrow = p, ncol = p)
     diag(cov.mat) <- 1
     cov.mat <- sigma[1]*cov.mat
