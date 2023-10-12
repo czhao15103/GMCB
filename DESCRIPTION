@@ -3,8 +3,20 @@ Type: Package
 Title: The Generalized Mean-Covariance Bridge Prior
 Version: 1.0-1
 Date: 2022-11-18
-Author: Christina Zhao
-Maintainer: Christina Zhao <zhaox684@umn.edu>
+Authors@R: c(person("Christina", "Zhao", role = c("aut", "cre"), email = "zhaox684@umn.edu"),
+             person("Marius", "Hofert", role = "ctb",
+                    comment = "Wrote C++ code for sampling exponentially tilted stable random variables used in gmcb"),
+             person("Martin", "Maechler", role = "ctb",
+                    comment = "Wrote C++ code for sampling exponentially tilted stable random variables used in gmcb"),
+             person("Bahadir", "Yuzbasi", role = "ctb",
+                    comment = " Wrote C++ code for frequentist bridge estimator used in init_freqbridge_nocovariates"),
+             person("Mohammad", "Arashi", role = "ctb",
+                    comment = "Wrote C++ code for frequentist bridge estimator used in init_freqbridge_nocovariates"),
+             person("Fikri", "Akdeniz", role = "ctb",
+                    comment = "Wrote C++ code for frequentist bridge estimator used in init_freqbridge_nocovariates"),
+             person("R Core", "Team", role = c("ctb", "cph"),
+                    comment = "Wrote lm which is used in ols.init and ols.covariance"))
+Authors: Christina Zhao [aut, cre]
 Description: Simultaneous mean and covariance estimation for multivariate regression
              with the generalized mean-covariance bridge (GMCB) prior. Implements
              both the GMCB-MH algorithm and the GMCB-SMN algorithm.
@@ -12,3 +24,4 @@ License: GPL (>= 3)
 Depends: R (>= 3.1.0), parallel, doParallel, doRNG, Matrix
 Imports: Rcpp (>= 1.0.8.3), matrixcalc, mcmcse
 LinkingTo: Rcpp, RcppArmadillo
+Suggests: mvtnorm
