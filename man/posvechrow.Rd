@@ -2,55 +2,59 @@
 \alias{pos.vechrow}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Indexing the elements of the lower triangular matrix in the modified Cholesky decomposition
-of the precision matrix
+Indexing the strictly lower triangular elements of a matrix
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+A function that returns the index of a strictly lower triangular element of a matrix
+in the vector formed by concatenating the strictly lower triangular elements of the
+matrix by row.
 }
 \usage{
-pos.vechrow(x)
+pos.vechrow(c, j)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{x}{
-%%     ~~Describe \code{x} here~~
+  \item{c}{
+row of the element.
+}
+  \item{j}{
+column of the element.
 }
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
+Because this function is designed for strictly lower triangular elements,
+\code{c} should be at least 2, and \code{j} should be less than \code{c}.
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+The index corresponding to the specified element in the vector formed by 
+concatenating the strictly lower triangular elements of the
+matrix by row.
 }
-\references{
+%\references{
 %% ~put references to the literature/web site here ~
-}
-\author{
-%%  ~~who you are~~
-}
-\note{
+%}
+%\author{
+%\packageAuthor{GMCB}
+%}
+%\note{
 %%  ~~further notes~~
-}
+%}
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+\code{\link{vechrow}}
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
 
-## The function is currently defined as
-function (x) 
-{
-  }
+mat <- matrix(1:16, nrow = 4)
+
+lowertrivec <- vech.row(mat)
+index <- pos.vechrow(3, 2)
+
+mat[3,2]
+lowertrivec[index]
+
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory (show via RShowDoc("KEYWORDS")):

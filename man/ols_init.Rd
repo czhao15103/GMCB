@@ -1,55 +1,97 @@
 \name{ols.init}
 \alias{ols.init}
+\alias{ols.covariance}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Initializing the mean and covariance parameters with OLS regression
+Initializing with OLS regression
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+These functions initialize the mean and covariance parameters using OLS regression.
 }
 \usage{
-ols.init(x)
+ols.init(y, x)
+
+ols.covariance(y)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
+  \item{y}{
+response matrix with dimensions \emph{n} by \emph{q}. Must have \eqn{q \ge 2}. 
+}
   \item{x}{
-%%     ~~Describe \code{x} here~~
+covariate matrix with dimensions \emph{n} by \emph{p}.
 }
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
+The function \code{ols.init} assumes a multivariate linear regression model for 
+the response, while the function \code{ols.covariance} assumes a non-zero mean
+that does not depend on covariates. For the OLS estimates to exist, both functions 
+require \eqn{q \le n}, and \code{ols.init} also requires \eqn{p < n}.
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+A list that includes the following components:
+  \item{b.init}{a vector of length \emph{pq}, the initializing values
+                for the mean regression coefficient matrix. Only included if using \code{ols.init}.}
+  \item{delta.init}{a vector of length \emph{q(q-1)/2}, the initializing values
+                    for the covariance parameters with interpretations as 
+                    regression coefficients.}
+  \item{gamma.init}{a vector of length \emph{q}, the initializing values for 
+                    the covariance parameters with interpretations as 
+                    regression error variances.}
+  \item{gamma.prior}{a vector of length two, giving the shape and rate 
+                     parameters for the inverse Gamma prior on the 
+                     covariance parameters with interpretations as 
+                     regression error variances.}
+  
 }
-\references{
+%\references{
 %% ~put references to the literature/web site here ~
-}
-\author{
-%%  ~~who you are~~
-}
-\note{
+%}
+%\author{
+%This function uses the \code{lm}, which was written by the R Core Team,
+%to compute the necessary OLS regressions. \packageAuthor{GMCB} 
+%wrote the wrapper that adapts OLS regression for
+%initializing the GMCB model.
+%}
+%\note{
 %%  ~~further notes~~
-}
+%}
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+\code{\link{init_freqbridge_nocovariates}}, \code{\link{init_naive}}, 
+\code{\link{nuisance_init}}
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
 
-## The function is currently defined as
-function (x) 
-{
-  }
+library(mvtnorm)
+
+## ols.init example
+n <- 100
+p <- 5
+q <- 5
+
+rho <- 0.7
+
+x.mats <- matgen(p, rho, type = "AR")
+y.mats <- matgen(q, rho, type = "AR")
+
+x <- rmvnorm(n, mean = rep(0, p), sigma = x.mats$cov.mat)
+b <- matrix(rnorm(p*q), nrow = p)
+y <- x \%*\% b + rmvnorm(n, mean = rep(0, q), sigma = y.mats$cov.mat)
+
+initialize <- ols.init(y, x)
+
+## ols.covariance example
+n <- 100
+q <- 5
+rho <- 0.7
+y.mats <- matgen(q, rho, type = "AR")
+y <- rmvnorm(n, mean = rep(0, q), sigma = y.mats$cov.mat)
+
+initialize <- ols.covariance(y)
+
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory (show via RShowDoc("KEYWORDS")):

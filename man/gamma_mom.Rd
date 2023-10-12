@@ -13,22 +13,22 @@ gamma.mom(gamma)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{gamma}{
-Vector of initializing values.
+vector of initializing values.
 }
 }
 %\details{
 %Computes the shape and rate parameter of an inverse Gamma prior
 %}
 \value{
-A vector of length two. The first component is the shape parameter of 
+A vector of length 2. The first component is the shape parameter of 
 the prior, and the second is the rate parameter.
 }
 %\references{
 %% ~put references to the literature/web site here ~
 %}
-\author{
-\packageAuthor{GMCB}
-}
+%\author{
+%Christina Zhao
+%}
 %\note{
 %%  ~~further notes~~
 %}
@@ -40,7 +40,7 @@ the prior, and the second is the rate parameter.
 %}
 \examples{
 
-gamma <- rgamma(20)
+gamma <- rgamma(20, shape = 3, rate = 2)
 gamma.prior <- gamma.mom(gamma)
 
 }

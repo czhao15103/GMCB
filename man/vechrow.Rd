@@ -2,55 +2,54 @@
 \alias{vech.row}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Concatenating the distinct elements of the lower triangular matrix of the 
-modified Cholesky decomposition of the precision matrix
+Concatenating the lower triangular elements of a matrix
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+A function that converts a square matrix to a vector by stacking the
+lower-triangular elements by row. 
 }
 \usage{
-vech.row(x)
+vech.row(mat, keep.diag = FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{x}{
-%%     ~~Describe \code{x} here~~
+  \item{mat}{
+matrix, should be square.
+}
+  \item{keep.diag}{
+logical. Default value is \code{FALSE}. If \code{TRUE}, includes the diagonals during concatentation.
 }
 }
-\details{
+%\details{
 %%  ~~ If necessary, more details than the description above ~~
-}
+%}
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+If \code{mat} is a \emph{q} by \emph{q} matrix and \code{keep.diag = FALSE}, a vector of length of \emph{q(q-1)/2}
+containing all strictly lower-triangular elements of \code{mat} is returned.
+If \code{keep.diag = TRUE}, a vector of length of \emph{q(q+1)/2} is returned.
 }
-\references{
+%\references{
 %% ~put references to the literature/web site here ~
-}
-\author{
-%%  ~~who you are~~
-}
-\note{
+%}
+%\author{
+%\packageAuthor{GMCB}
+%}
+%\note{
 %%  ~~further notes~~
-}
+%}
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+\code{\link{posvechrow}}
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
 
-## The function is currently defined as
-function (x) 
-{
-  }
+mat <- matrix(1:16, nrow = 4)
+
+nodiag <- vech.row(mat)
+keepdiag <- vech.row(mat, keep.diag = TRUE)
+
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory (show via RShowDoc("KEYWORDS")):

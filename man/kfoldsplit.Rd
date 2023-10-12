@@ -5,51 +5,47 @@
 k-fold cross-validation
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+A function for dividing a set of observations for \emph{k}-fold
+cross-validation. The generated folds do not overlap.
 }
 \usage{
-kfoldsplit(x)
+kfoldsplit(n, folds = 5)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{x}{
-%%     ~~Describe \code{x} here~~
+  \item{n}{
+number of observations.
+}
+  \item{folds}{
+number of folds. Default value is 5.
 }
 }
-\details{
+%\details{
 %%  ~~ If necessary, more details than the description above ~~
-}
+%}
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+A list of length \code{folds}, with each element containing the indices for that fold.
 }
-\references{
+%\references{
 %% ~put references to the literature/web site here ~
-}
-\author{
-%%  ~~who you are~~
-}
-\note{
+%}
+%\author{
+%Christina Zhao
+%}
+%\note{
 %%  ~~further notes~~
-}
+%}
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
-\seealso{
+%\seealso{
 %% ~~objects to See Also as \code{\link{help}}, ~~~
-}
+%}
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
 
-## The function is currently defined as
-function (x) 
-{
-  }
+n <- 1000
+folds <- kfoldsplit(n)
+
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory (show via RShowDoc("KEYWORDS")):

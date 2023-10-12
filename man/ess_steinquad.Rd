@@ -5,18 +5,26 @@
 Multivariate effective sample size for a certain Bayes estimator
 }
 \description{
-Calculates the multivariate effective sample size for the mean regression coefficient matrix and the error precision matrix under scalar quadratic loss and Stein's loss
+Calculates the multivariate effective sample size for the mean regression coefficient matrix \emph{B} and the error precision matrix \eqn{\Omega} under scalar quadratic loss and Stein's loss 
 }
 \usage{
 ess_steinquad(b, delta, gamma)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{b}{the matrix of vectorized samples of the mean regression coefficient matrix}
-  \item{delta}{the matrix of the samples of the distinct covariance regression parameters}
-  \item{gamma}{the matrix of the samples of the }
+  \item{b}{matrix of vectorized samples of the mean regression coefficient matrix.}
+  \item{delta}{matrix of the strictly lower triangular elements in the lower triangular factor of the modified Cholesky decomposition of the error precision matrix.}
+  \item{gamma}{matrix of the diagonal elements of the diagonal matrix factor of the modified Cholesky decomposition of the error precision matrix.}
 }
 \details{
+This function is intended for use with the output from \code{gmcb}, which produces posterior samples of the parameters of the modified Cholesky decomposition of \eqn{\Omega}, given by 
+\deqn{
+\Omega = T'D^{-1}T
+}
+where \emph{T} denotes a lower triangular matrix with ones on the diagonal and
+\emph{D} denotes a diagonal matrix with positive diagonal elements. The function argument 
+\code{delta} contains the parameters in \emph{T}, while \code{gamma} contains the parameters in \emph{D}.
+
 The scalar quadratic loss (Yuasa & Kubokawa, 2021) for an estimate \eqn{\tilde{B}} is given by
 \deqn{
   L_S(\tilde{B},B) = tr((\tilde{B}-B)\Omega(\tilde{B}-B)')
@@ -53,9 +61,9 @@ prior. \emph{The Annals of Statistics}, 22 (3), 1195–1211.
 Yuasa, R., & Kubokawa, T. (2021). Generalized Bayes estimators with closed forms for
 the normal mean and covariance matrices.
 }
-\author{
-\packageAuthor{GMCB}
-}
+%\author{
+%Christina Zhao
+%}
 
 \examples{
 
@@ -72,9 +80,13 @@ y.mats <- matgen(q, rho, type = "AR")
 
 x <- rmvnorm(n, mean = rep(0, p), sigma = x.mats$cov.mat)
 b <- matrix(rnorm(p*q), nrow = p)
-y <- x %*% b + rmvnorm(n, mean = rep(0, q), sigma = y.mats$cov.mat)
+y <- x \%*\% b + rmvnorm(n, mean = rep(0, q), sigma = y.mats$cov.mat)
 
-out <- gmcb(y, x)
+priors <- list(lambda = c(1, 1, 40, 0.5), tau = c(1, 1, 40, 0.5),
+               alpha = c(0.5, 4))
+rw.scale <- list(b = 0.1, delta = 0.1, alpha.b = 0.5, alpha.d = 0.5)
+
+out <- gmcb(y = y, x = x, priors = priors, rw.scale = rw.scale)
 
 ess <- ess_steinquad(out$mcmc$b, out$mcmc$delta, out$mcmc$gamma)
 

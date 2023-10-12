@@ -6,8 +6,10 @@ Initializing the covariance parameters in the absence of covariates with
 frequentist bridge regression
 }
 \description{
-Uses a sequence of frequentist bridge regressions to initialize the covariance 
-parameters. This function assumes a non-zero mean.
+This function assumes that the distribution of the response
+has a non-zero mean that does not depend on covariates and 
+uses a sequence of frequentist bridge regressions to initialize the covariance 
+parameters. 
 The regularization parameters and the penalty exponents corresponding to the
 mean and covariance are assumed to be the same and selected using k-fold 
 cross-validation.
@@ -19,26 +21,26 @@ init_freqbridge_nocovariates(y, alpha.prior, nfolds = 5, nalpha = 10,
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{y}{
-response matrix with dimensions \eqn{n \times q}. Must have \eqn{q \ge 2}. 
+response matrix with dimensions \emph{n} by \emph{q}. Must have \eqn{q \ge 2}. 
 }
   \item{alpha.prior}{
-vector of length two giving the minimum and maximum values for the uniform prior
+vector of length 2 giving the minimum and maximum values for the uniform prior
 on the penalty exponents.
 }
   \item{nfolds}{
-scalar specifying how many folds to use for k-fold cross-validation. 
+folds to use for k-fold cross-validation. 
 Default value is 5.
 }
   \item{nalpha}{
-scalar specifying the number of penalty exponent values to consider. 
+number of penalty exponent values to consider. 
 Default value is 10.
 }
   \item{nlambdda}{
-scalar specifying the number of regularization values to consider. 
+number of regularization values to consider. 
 Default value is 20.
 }
   \item{cores}{
-scalar specifying the number of cores to use for parallelization. 
+number of cores to use for parallelization. 
 Set to 1 for no parallelization. Default value is 4.
 }
   \item{seed}{
@@ -46,7 +48,7 @@ optional scalar passed to \code{set.seed}. Default is \code{NULL}.
 }
 }
 \details{
-This function considers \code{nalpha}\eqn{\cdot}\code{nlambda} sets of parameters
+This function considers \code{nalpha} times \code{nlambda} sets of parameters
 for the regularization parameters and penalty exponent parameters in the GMCB
 model.  
 
@@ -64,13 +66,13 @@ A list including the following componets:
   \item{gamma.init}{a vector of length \emph{q}, the initializing values for 
                     the covariance parameters with interpretations as 
                     regression error variances.}
-  \item{gamma.prior}{a vector of length two, giving the shape and rate 
+  \item{gamma.prior}{a vector of length 2, giving the shape and rate 
                      parameters for the inverse Gamma prior on the 
                      covariance parameters with interpretations as 
                      regression error variances.}
-  \item{alpha.b.init}{scalar, the initializing value for the penalty exponent
+  \item{alpha.b.init}{the initializing value for the penalty exponent
                       for the mean.}
-  \item{alpha.d.init}{scalar, the initializing value for the penalty exponent
+  \item{alpha.d.init}{the initializing value for the penalty exponent
                       for the covariance parameters.}
   \item{lambda.init}{a vector of length \emph{q}, the initializing values for the 
                      regularization parameters for the mean.}
@@ -86,12 +88,12 @@ A list including the following componets:
   Yuzbasi B, Arashi M, Akdeniz F (2020). _rbridge: Restricted Bridge Estimation_. R package version 1.0.2,
   <https://CRAN.R-project.org/package=rbridge>.
 }
-\author{
-Bahadir Yuzbasi, Mohammad Arashi, and Fikri Akdeniz wrote the C++ 
-source code for computing the frequentist bridge. \packageAuthor{GMCB} 
-wrote the wrapper function that adapts the frequentist bridge for 
-initializing the GMCB model.
-}
+%\author{
+%Bahadir Yuzbasi, Mohammad Arashi, and Fikri Akdeniz wrote the C++ 
+%source code for computing the frequentist bridge. Christina Zhao
+%wrote the wrapper that adapts the frequentist bridge for 
+%initializing the GMCB model.
+%}
 \note{
 It is recommended that \code{nalpha}\eqn{\cdot}\code{nlambda} not be too large
 to avoid long computation times. Even with the default values and parallelization, 
@@ -101,15 +103,17 @@ runtime can be extensive if \emph{q} is large.
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{\link{init_naive}}, \code{\link{nuisance_init}}, 
-\code{\link{nuisance_init_meanzero}}, \code{\link{ols_covariance}},
-\code{\link{ols_init}}
+\code{\link{init_naive}}, \code{\link{nuisance_init}}, \code{\link{ols_init}}
 }
 \examples{
 
 library(mvtnorm)
-y.cov <- toeplitz(c(1, 0.7, 0.7))
-y <- rmvnorm(100, mean = rep(0, 3), sigma = y.cov)
+
+n <- 100
+q <- 5
+rho <- 0.7
+y.mats <- matgen(q, rho, type = "AR")
+y <- rmvnorm(n, mean = rep(0, q), sigma = y.mats$cov.mat)
 
 alpha.prior <- c(0.5, 4)
 

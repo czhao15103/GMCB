@@ -5,51 +5,62 @@
 Generating compound symmetric, AR(1), or diagonal matrices
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+A function for quickly generating compound symmetric, AR(1), and diagonal matrices,
+as well as the corresponding inverse matrix.
 }
 \usage{
-matgen(x)
+matgen(p, rho, sigma = 1, type = c("AR", "CS", "cI"))
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{x}{
-%%     ~~Describe \code{x} here~~
+  \item{p}{
+dimension of the matrix to be generated.
+}
+  \item{rho}{
+correlation when \code{type = AR} or \code{type = CS}. Ignored when
+\code{type = cI}.
+}
+  \item{sigma}{
+common variance if \code{type = AR} or \code{type = CS}, 
+the diagonal value if \code{type = cI}. Default value is \code{sigma = 1}.
+}
+  \item{type}{
+type of matrix to generate, one of \code{AR}, \code{CS}, or \code{cI}.
+Defaults to \code{AR}.
 }
 }
-\details{
+%\details{
 %%  ~~ If necessary, more details than the description above ~~
-}
+%}
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+A list including the following components:
+  \item{cov.mat}{\code{p} by \code{p} matrix of the specified type.}
+  \item{prec.mat}{\code{p} by \code{p} matrix, inverse of the specified covariance matrix.}
 }
-\references{
+%\references{
 %% ~put references to the literature/web site here ~
-}
-\author{
-%%  ~~who you are~~
-}
-\note{
+%}
+%\author{
+%Christina Zhao
+%}
+%\note{
 %%  ~~further notes~~
-}
+%}
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
-\seealso{
+%\seealso{
 %% ~~objects to See Also as \code{\link{help}}, ~~~
-}
+%}
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
 
-## The function is currently defined as
-function (x) 
-{
-  }
+p <- 10
+rho <- 0.7
+
+mats <- matgen(p, rho, type = "AR")
+mats <- matgen(p, rho, type = "CS")
+mats <- matgen(p = p, sigma = 3, type = "cI")
+
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory (show via RShowDoc("KEYWORDS")):

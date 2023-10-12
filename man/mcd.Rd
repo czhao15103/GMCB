@@ -9,48 +9,57 @@ Computes the modified Cholesky decomposition of the inverse of the input
 covariance matrix.
 }
 \usage{
-mcd(x)
+mcd(cov.mat)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{x}{
-%%     ~~Describe \code{x} here~~
+  \item{cov.mat}{
+a covariance matrix.
 }
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
+Suppose that \eqn{\Sigma} is a covariance matrix, and let \emph{R} denote its
+lower triangular Cholesky factor. Let \emph{D} be the diagonal matrix with
+diagonal elements the squared diagonal elements of \emph{R}. Define
+\deqn{
+L = RD^{-1/2}
+}
+Then
+\deqn{
+\Sigma = LDL'
+}
+Define \eqn{T = L^{-1}}. Then the modified Cholesky decomposition of \eqn{\Sigma^{-1}}
+is 
+\deqn{
+\Sigma^{-1} = T'D^{-1}T
+}
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+A list including the following components:
+  \item{t}{the matrix \emph{T}, a lower triangular matrix with ones on the diagonal.}
+  \item{d}{the matrix \emph{D}, a diagonal matrix with postive diagonal elements.}
 }
 \references{
-%% ~put references to the literature/web site here ~
+  Pourahmadi, M. (2011) Covariance Estimation: The GLM and Regularization 
+  Perspectives. \emph{Statistical Science} \bold{26}:3 369--387.
 }
-\author{
-%%  ~~who you are~~
-}
-\note{
+%\author{
+%Christina Zhao
+%}
+%\note{
 %%  ~~further notes~~
-}
+%}
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
-\seealso{
+%\seealso{
 %% ~~objects to See Also as \code{\link{help}}, ~~~
-}
+%}
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
 
-## The function is currently defined as
-function (x) 
-{
-  }
+mats <- matgen(p = 10, rho = 0.7, type = "CS")
+mcd.cs <- mcd(mats$cov.mat)
+
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory (show via RShowDoc("KEYWORDS")):

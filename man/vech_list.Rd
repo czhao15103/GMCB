@@ -5,51 +5,68 @@
 Obtaining the vech of a list of matrices
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+A function that turns a list of length \emph{m} with elements \emph{q} by \emph{q}
+matrices into a matrix with dimensions \emph{m} by \emph{q(q+1)/2}, where each row
+of the matrix is the vech of the corresponding matrix in the list.
 }
 \usage{
-vech_list(x)
+vech.list(list)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{x}{
-%%     ~~Describe \code{x} here~~
+  \item{list}{
+a list of length \emph{m} with elements \emph{q} by \emph{q}
+matrices
 }
 }
-\details{
+%\details{
 %%  ~~ If necessary, more details than the description above ~~
-}
+%}
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+A matrix of dimension \emph{m} by \emph{q(q+1)/2}.
 }
-\references{
+%\references{
 %% ~put references to the literature/web site here ~
-}
-\author{
-%%  ~~who you are~~
-}
-\note{
+%}
+%\author{
+%\packageAuthor{GMCB}
+%}
+%\note{
 %%  ~~further notes~~
-}
+%}
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
-\seealso{
+%\seealso{
 %% ~~objects to See Also as \code{\link{help}}, ~~~
-}
+%}
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
 
-## The function is currently defined as
-function (x) 
-{
-  }
+library(mvtnorm)
+
+n <- 100
+p <- 5
+q <- 5
+
+rho <- 0.7
+
+x.mats <- matgen(p, rho, type = "AR")
+y.mats <- matgen(q, rho, type = "AR")
+
+x <- rmvnorm(n, mean = rep(0, p), sigma = x.mats$cov.mat)
+b <- matrix(rnorm(p*q), nrow = p)
+y <- x \%*\% b + rmvnorm(n, mean = rep(0, q), sigma = y.mats$cov.mat)
+
+priors <- list(lambda = c(1, 1, 40, 0.5), tau = c(1, 1, 40, 0.5),
+               alpha = c(0.5, 4))
+rw.scale <- list(b = 0.1, delta = 0.1, alpha.b = 0.5, alpha.d = 0.5)
+
+out <- gmcb(y = y, x = x, priors = priors, rw.scale = rw.scale)
+
+preconly <- prec.mat(out$mcmc$delta, out$mcmc$gamma, cov = FALSE)
+
+vechsamples <- vech.list(preconly)
+
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory (show via RShowDoc("KEYWORDS")):
