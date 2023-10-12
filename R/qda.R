@@ -45,9 +45,9 @@ qda <- function(test, classes, class.prior, class.means, class.precisions,
       }
       return(classes[which.max(d.f)])
     }
+    
+    stopCluster(clus)
   }
-  
-  stopCluster(clus)
   
   test.class
 }
