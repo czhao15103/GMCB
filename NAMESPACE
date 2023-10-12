@@ -1,9 +1,12 @@
 useDynLib(GMCB, .registration=TRUE)
 importFrom(Rcpp, evalCpp)
-exportPattern("^[[:alpha:]]+")
 
 S3method(gmcb, matrix)
 S3method(gmcb, gbridge)
+export(gmcb, b.to.matrix, delta.to.matrix, ess_steinquad, gamma.mom,
+       init_freqbridge_nocovariates, init_naive, kfoldsplit, matgen, mcd,
+       nuisance.init, nuisance.init.meanzero, ols.init, ols.covariance,
+       pos.vechrow, prec.mat, qda, vech.list, vech.row)
 
 importFrom(mcmcse, mcse.multi)
 importFrom(matrixcalc, duplication.matrix, vec, vech)
