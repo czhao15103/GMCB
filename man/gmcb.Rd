@@ -126,6 +126,7 @@ An object of class \code{gbridge}, which is a list including the following compo
   \item{acceptances}{a list giving the acceptance rates for the Metropolis-Hastings
                      updates. Has length 4 if \code{algorithm = MH} and length 2
                      if \code{algorithm = SMN}.}
+\item{initializing.seed}{the value of \code{.Random.seed} before generation of initializing values.}
   \item{start.seed}{the value of \code{.Random.seed} before sampling began.}
   \item{end.seed}{the value of \code{.Random.seed} after sampling ended.}
   \item{timing}{a character vector of length 2, giving the time used for 

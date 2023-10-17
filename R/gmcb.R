@@ -251,6 +251,12 @@ gmcb.matrix <- function(y, x = NULL, meanzero = FALSE,
   
   #### initialize if needed ####
   
+  # create .Random.seed if it does not exist
+  if (!exists(".Random.seed")) {
+    rnorm(1)
+  }
+  initializing.seed <- .Random.seed # so that the initial values can be reproduced as needed
+  
   if (is.null(initial.values) & !meanzero) { # initialization for nonzero mean structure
     if (p < n & q < n) {
       # initialize with OLS estimates for B and delta
@@ -529,10 +535,6 @@ gmcb.matrix <- function(y, x = NULL, meanzero = FALSE,
   pos <- lapply(2:q, function(c) pos.vechrow(c, 1:(c-1))) # indexing for each delta_c, list of length q-1
   iter.1 <- iter + 1 # will include initial values as "step 0"
   
-  # create .Random.seed if it does not exist
-  if (!exists(".Random.seed")) {
-    rnorm(1)
-  }
   starting.seed <- .Random.seed
   
   if (algorithm == "MH") {
@@ -713,6 +715,7 @@ gmcb.matrix <- function(y, x = NULL, meanzero = FALSE,
   }
   
   final.out <- list(mcmc = out$mcmc, acceptances = out$acceptances,
+                    initializing.seed = initializing.seed,
                     start.seed = starting.seed, end.seed = ending.seed,
                     timing = timing, final.values = final.values,
                     y = y, x = x, meanzero = meanzero,
