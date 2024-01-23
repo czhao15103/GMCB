@@ -34,7 +34,7 @@ A list of \code{p} by \code{q} matrices
 %}
 
 \seealso{
-\code{\link{precmat}}
+\code{\link{prec.mat}}
 }
 \examples{
 

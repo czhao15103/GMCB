@@ -95,7 +95,7 @@ Both functions require a list that includes the following components:
 
 \seealso{
 \code{\link{init_freqbridge_nocovariates}}, \code{\link{init_naive}}, 
-\code{\link{ols_init}}
+\code{\link{ols.init}}
 }
 \examples{
 

@@ -48,18 +48,19 @@ A list with the following elements:
   \item{asymp.cov}{the estimated asymptotic covariance matrix}
 }
 \references{
-Flegal, J. M., Hughes, J., Vats, D., Dai, N., Gupta, K., & Maji, U. (2021). mcmcse:
-Monte Carlo standard errors for MCMC [R package version 1.5-0]. Riverside, CA,
+Flegal, J. M., Hughs, J., Vats, D., Dai, N., Gupta, K., & Maji, U. (2021). mcmcse:
+Monte Carlo standard errors for MCMC [R package version 1.5-0]. Riverside, CA, 
 Kanpur, India.
 
 Vats, D., Flegal, J. M., & Jones, G. L. (2019). Multivariate output analysis for Markov
-chain Monte Carlo. \emph{Biometrika}, 106 (2), 321–337. \url{https://doi.org/10.1093/biomet/asz002}
+chain Monte Carlo. \emph{Biometrika}, 106 (2), 321-337. \url{https://doi.org/10.1093/biomet/asz002}.
 
-Yang, R., & Berger, J. O. (1994). Estimation of a covariance matrix using the reference
-prior. \emph{The Annals of Statistics}, 22 (3), 1195–1211.
+Yang, R. & Berger, J. O. (1994). Estimation of a covariance matrix using the reference prior.
+\emph{The Annals of Statistics}, 22 (3), 1195-1211.
 
-Yuasa, R., & Kubokawa, T. (2021). Generalized Bayes estimators with closed forms for
+Yuasa, R. & Kubokawa, T. (2021). Generalized Bayes estimators with closed forms for
 the normal mean and covariance matrices.
+
 }
 %\author{
 %Christina Zhao

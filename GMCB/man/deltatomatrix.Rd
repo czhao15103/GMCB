@@ -41,7 +41,7 @@ matrices with ones on the diagonals.
 %}
 
 \seealso{
-\code{\link{precmat}}
+\code{\link{prec.mat}}
 }
 \examples{
 

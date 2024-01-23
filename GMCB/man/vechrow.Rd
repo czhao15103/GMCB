@@ -41,7 +41,7 @@ If \code{keep.diag = TRUE}, a vector of length of \emph{q(q+1)/2} is returned.
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{\link{posvechrow}}
+\code{\link{pos.vechrow}}
 }
 \examples{
 

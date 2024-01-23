@@ -1,5 +1,5 @@
-\name{gamma.mom}
-\alias{gamma.mom}
+\name{gamma_mom}
+\alias{gamma_mom}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Eliciting a prior for gamma
@@ -8,7 +8,7 @@ Eliciting a prior for gamma
 Elicits an inverse Gamma prior using a method of moments estimator.
 }
 \usage{
-gamma.mom(gamma)
+gamma_mom(gamma)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -41,7 +41,7 @@ the prior, and the second is the rate parameter.
 \examples{
 
 gamma <- rgamma(20, shape = 3, rate = 2)
-gamma.prior <- gamma.mom(gamma)
+gamma.prior <- gamma_mom(gamma)
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

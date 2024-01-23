@@ -517,7 +517,7 @@ gmcb.matrix <- function(y, x = NULL, meanzero = FALSE,
   
   # check presence
   if (!("gamma" %in% names(priors))) {
-    priors$gamma <- gamma.mom(initial.values$gamma)
+    priors$gamma <- gamma_mom(initial.values$gamma)
   }
   
   # check format

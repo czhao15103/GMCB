@@ -61,7 +61,7 @@ A list that includes the following components:
 
 \seealso{
 \code{\link{init_freqbridge_nocovariates}}, \code{\link{init_naive}}, 
-\code{\link{nuisance_init}}
+\code{\link{nuisance.init}}
 }
 \examples{
 

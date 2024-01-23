@@ -1,12 +1,18 @@
 useDynLib(GMCB, .registration=TRUE)
+import(foreach)
+import(parallel)
+import(doParallel)
+import(doRNG)
+import(Matrix)
 importFrom(Rcpp, evalCpp)
 
 S3method(gmcb, matrix)
 S3method(gmcb, gbridge)
-export(gmcb, b.to.matrix, delta.to.matrix, ess_steinquad, gamma.mom,
+export(gmcb, b.to.matrix, delta.to.matrix, ess_steinquad, gamma_mom,
        init_freqbridge_nocovariates, init_naive, kfoldsplit, matgen, mcd,
        nuisance.init, nuisance.init.meanzero, ols.init, ols.covariance,
        pos.vechrow, prec.mat, qda, vech.list, vech.row)
 
 importFrom(mcmcse, mcse.multi)
 importFrom(matrixcalc, duplication.matrix, vec, vech)
+importFrom(stats, lm, na.omit, rgamma, rnorm, runif, var, cov, mahalanobis)

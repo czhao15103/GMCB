@@ -35,7 +35,7 @@ Default value is 5.
 number of penalty exponent values to consider. 
 Default value is 10.
 }
-  \item{nlambdda}{
+  \item{nlambda}{
 number of regularization values to consider. 
 Default value is 20.
 }
@@ -103,7 +103,7 @@ runtime can be extensive if \emph{q} is large.
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{\link{init_naive}}, \code{\link{nuisance_init}}, \code{\link{ols_init}}
+\code{\link{init_naive}}, \code{\link{nuisance.init}}, \code{\link{ols.init}}
 }
 \examples{
 

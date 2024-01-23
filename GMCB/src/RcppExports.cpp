@@ -41,18 +41,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// rep_times_smn
-arma::vec rep_times_smn(arma::vec x, arma::vec y);
-RcppExport SEXP _GMCB_rep_times_smn(SEXP xSEXP, SEXP ySEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::vec >::type x(xSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type y(ySEXP);
-    rcpp_result_gen = Rcpp::wrap(rep_times_smn(x, y));
-    return rcpp_result_gen;
-END_RCPP
-}
 // delta_to_matrix_inner_smn
 arma::mat delta_to_matrix_inner_smn(arma::vec& delta, int q);
 RcppExport SEXP _GMCB_delta_to_matrix_inner_smn(SEXP deltaSEXP, SEXP qSEXP) {
@@ -119,6 +107,48 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// gmcb_mh_meanzero_debug
+List gmcb_mh_meanzero_debug(const arma::mat& y, const NumericVector& d_init, const NumericVector& gamma_init, const double& alpha_d_init, const NumericVector& gamma_prior, const NumericVector& alpha_prior, const NumericMatrix& tau_prior, const int& iter, const NumericVector& d_scale, const double& alpha_d_scale, const List& pos);
+RcppExport SEXP _GMCB_gmcb_mh_meanzero_debug(SEXP ySEXP, SEXP d_initSEXP, SEXP gamma_initSEXP, SEXP alpha_d_initSEXP, SEXP gamma_priorSEXP, SEXP alpha_priorSEXP, SEXP tau_priorSEXP, SEXP iterSEXP, SEXP d_scaleSEXP, SEXP alpha_d_scaleSEXP, SEXP posSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type d_init(d_initSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type gamma_init(gamma_initSEXP);
+    Rcpp::traits::input_parameter< const double& >::type alpha_d_init(alpha_d_initSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type gamma_prior(gamma_priorSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type alpha_prior(alpha_priorSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type tau_prior(tau_priorSEXP);
+    Rcpp::traits::input_parameter< const int& >::type iter(iterSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type d_scale(d_scaleSEXP);
+    Rcpp::traits::input_parameter< const double& >::type alpha_d_scale(alpha_d_scaleSEXP);
+    Rcpp::traits::input_parameter< const List& >::type pos(posSEXP);
+    rcpp_result_gen = Rcpp::wrap(gmcb_mh_meanzero_debug(y, d_init, gamma_init, alpha_d_init, gamma_prior, alpha_prior, tau_prior, iter, d_scale, alpha_d_scale, pos));
+    return rcpp_result_gen;
+END_RCPP
+}
+// gmcb_mh_meanzero_nodebug
+List gmcb_mh_meanzero_nodebug(const arma::mat& y, const NumericVector& d_init, const NumericVector& gamma_init, const double& alpha_d_init, const NumericVector& gamma_prior, const NumericVector& alpha_prior, const NumericMatrix& tau_prior, const int& iter, const NumericVector& d_scale, const double& alpha_d_scale, const List& pos);
+RcppExport SEXP _GMCB_gmcb_mh_meanzero_nodebug(SEXP ySEXP, SEXP d_initSEXP, SEXP gamma_initSEXP, SEXP alpha_d_initSEXP, SEXP gamma_priorSEXP, SEXP alpha_priorSEXP, SEXP tau_priorSEXP, SEXP iterSEXP, SEXP d_scaleSEXP, SEXP alpha_d_scaleSEXP, SEXP posSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type d_init(d_initSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type gamma_init(gamma_initSEXP);
+    Rcpp::traits::input_parameter< const double& >::type alpha_d_init(alpha_d_initSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type gamma_prior(gamma_priorSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type alpha_prior(alpha_priorSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type tau_prior(tau_priorSEXP);
+    Rcpp::traits::input_parameter< const int& >::type iter(iterSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type d_scale(d_scaleSEXP);
+    Rcpp::traits::input_parameter< const double& >::type alpha_d_scale(alpha_d_scaleSEXP);
+    Rcpp::traits::input_parameter< const List& >::type pos(posSEXP);
+    rcpp_result_gen = Rcpp::wrap(gmcb_mh_meanzero_nodebug(y, d_init, gamma_init, alpha_d_init, gamma_prior, alpha_prior, tau_prior, iter, d_scale, alpha_d_scale, pos));
+    return rcpp_result_gen;
+END_RCPP
+}
 // gmcb_smn_debug
 List gmcb_smn_debug(const arma::mat& y, const arma::mat& x, const arma::rowvec& b_init, const arma::rowvec& d_init, const arma::rowvec& gamma_init, const double& alpha_b_init, const double& alpha_d_init, const arma::rowvec& lambda_init, const arma::rowvec& tau_init, const arma::vec& gamma_prior, const arma::vec& alpha_prior, const arma::mat& lambda_prior, const arma::mat& tau_prior, const int& iter, const double& alpha_b_scale, const double& alpha_d_scale, const List& pos);
 RcppExport SEXP _GMCB_gmcb_smn_debug(SEXP ySEXP, SEXP xSEXP, SEXP b_initSEXP, SEXP d_initSEXP, SEXP gamma_initSEXP, SEXP alpha_b_initSEXP, SEXP alpha_d_initSEXP, SEXP lambda_initSEXP, SEXP tau_initSEXP, SEXP gamma_priorSEXP, SEXP alpha_priorSEXP, SEXP lambda_priorSEXP, SEXP tau_priorSEXP, SEXP iterSEXP, SEXP alpha_b_scaleSEXP, SEXP alpha_d_scaleSEXP, SEXP posSEXP) {
@@ -173,16 +203,61 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// gmcb_smn_meanzero_debug
+List gmcb_smn_meanzero_debug(const arma::mat& y, const arma::rowvec& d_init, const arma::rowvec& gamma_init, const double& alpha_d_init, const arma::rowvec& tau_init, const arma::vec& gamma_prior, const arma::vec& alpha_prior, const arma::mat& tau_prior, const int& iter, const double& alpha_d_scale, const List& pos);
+RcppExport SEXP _GMCB_gmcb_smn_meanzero_debug(SEXP ySEXP, SEXP d_initSEXP, SEXP gamma_initSEXP, SEXP alpha_d_initSEXP, SEXP tau_initSEXP, SEXP gamma_priorSEXP, SEXP alpha_priorSEXP, SEXP tau_priorSEXP, SEXP iterSEXP, SEXP alpha_d_scaleSEXP, SEXP posSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type d_init(d_initSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type gamma_init(gamma_initSEXP);
+    Rcpp::traits::input_parameter< const double& >::type alpha_d_init(alpha_d_initSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type tau_init(tau_initSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type gamma_prior(gamma_priorSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type alpha_prior(alpha_priorSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type tau_prior(tau_priorSEXP);
+    Rcpp::traits::input_parameter< const int& >::type iter(iterSEXP);
+    Rcpp::traits::input_parameter< const double& >::type alpha_d_scale(alpha_d_scaleSEXP);
+    Rcpp::traits::input_parameter< const List& >::type pos(posSEXP);
+    rcpp_result_gen = Rcpp::wrap(gmcb_smn_meanzero_debug(y, d_init, gamma_init, alpha_d_init, tau_init, gamma_prior, alpha_prior, tau_prior, iter, alpha_d_scale, pos));
+    return rcpp_result_gen;
+END_RCPP
+}
+// gmcb_smn_meanzero_nodebug
+List gmcb_smn_meanzero_nodebug(const arma::mat& y, const arma::rowvec& d_init, const arma::rowvec& gamma_init, const double& alpha_d_init, const arma::rowvec& tau_init, const arma::vec& gamma_prior, const arma::vec& alpha_prior, const arma::mat& tau_prior, const int& iter, const double& alpha_d_scale, const List& pos);
+RcppExport SEXP _GMCB_gmcb_smn_meanzero_nodebug(SEXP ySEXP, SEXP d_initSEXP, SEXP gamma_initSEXP, SEXP alpha_d_initSEXP, SEXP tau_initSEXP, SEXP gamma_priorSEXP, SEXP alpha_priorSEXP, SEXP tau_priorSEXP, SEXP iterSEXP, SEXP alpha_d_scaleSEXP, SEXP posSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type d_init(d_initSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type gamma_init(gamma_initSEXP);
+    Rcpp::traits::input_parameter< const double& >::type alpha_d_init(alpha_d_initSEXP);
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type tau_init(tau_initSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type gamma_prior(gamma_priorSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type alpha_prior(alpha_priorSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type tau_prior(tau_priorSEXP);
+    Rcpp::traits::input_parameter< const int& >::type iter(iterSEXP);
+    Rcpp::traits::input_parameter< const double& >::type alpha_d_scale(alpha_d_scaleSEXP);
+    Rcpp::traits::input_parameter< const List& >::type pos(posSEXP);
+    rcpp_result_gen = Rcpp::wrap(gmcb_smn_meanzero_nodebug(y, d_init, gamma_init, alpha_d_init, tau_init, gamma_prior, alpha_prior, tau_prior, iter, alpha_d_scale, pos));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_GMCB_Bridge", (DL_FUNC) &_GMCB_Bridge, 6},
     {"_GMCB_Prediction_Grid", (DL_FUNC) &_GMCB_Prediction_Grid, 4},
-    {"_GMCB_rep_times_smn", (DL_FUNC) &_GMCB_rep_times_smn, 2},
     {"_GMCB_delta_to_matrix_inner_smn", (DL_FUNC) &_GMCB_delta_to_matrix_inner_smn, 2},
     {"_GMCB_gmcb_mh_debug", (DL_FUNC) &_GMCB_gmcb_mh_debug, 17},
     {"_GMCB_gmcb_mh_nodebug", (DL_FUNC) &_GMCB_gmcb_mh_nodebug, 17},
+    {"_GMCB_gmcb_mh_meanzero_debug", (DL_FUNC) &_GMCB_gmcb_mh_meanzero_debug, 11},
+    {"_GMCB_gmcb_mh_meanzero_nodebug", (DL_FUNC) &_GMCB_gmcb_mh_meanzero_nodebug, 11},
     {"_GMCB_gmcb_smn_debug", (DL_FUNC) &_GMCB_gmcb_smn_debug, 17},
     {"_GMCB_gmcb_smn_nodebug", (DL_FUNC) &_GMCB_gmcb_smn_nodebug, 17},
+    {"_GMCB_gmcb_smn_meanzero_debug", (DL_FUNC) &_GMCB_gmcb_smn_meanzero_debug, 11},
+    {"_GMCB_gmcb_smn_meanzero_nodebug", (DL_FUNC) &_GMCB_gmcb_smn_meanzero_nodebug, 11},
     {NULL, NULL, 0}
 };
 

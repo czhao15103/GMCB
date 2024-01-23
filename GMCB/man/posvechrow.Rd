@@ -43,7 +43,7 @@ matrix by row.
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{\link{vechrow}}
+\code{\link{vech.row}}
 }
 \examples{
 

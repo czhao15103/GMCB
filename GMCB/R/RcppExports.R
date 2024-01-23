@@ -9,10 +9,6 @@ Prediction_Grid <- function(x_test, x_train, y_train, grid_betas) {
     .Call(`_GMCB_Prediction_Grid`, x_test, x_train, y_train, grid_betas)
 }
 
-rep_times_smn <- function(x, y) {
-    .Call(`_GMCB_rep_times_smn`, x, y)
-}
-
 delta_to_matrix_inner_smn <- function(delta, q) {
     .Call(`_GMCB_delta_to_matrix_inner_smn`, delta, q)
 }
@@ -25,11 +21,27 @@ gmcb_mh_nodebug <- function(y, x, b_init, d_init, gamma_init, alpha_b_init, alph
     .Call(`_GMCB_gmcb_mh_nodebug`, y, x, b_init, d_init, gamma_init, alpha_b_init, alpha_d_init, gamma_prior, alpha_prior, lambda_prior, tau_prior, iter, b_scale, d_scale, alpha_b_scale, alpha_d_scale, pos)
 }
 
+gmcb_mh_meanzero_debug <- function(y, d_init, gamma_init, alpha_d_init, gamma_prior, alpha_prior, tau_prior, iter, d_scale, alpha_d_scale, pos) {
+    .Call(`_GMCB_gmcb_mh_meanzero_debug`, y, d_init, gamma_init, alpha_d_init, gamma_prior, alpha_prior, tau_prior, iter, d_scale, alpha_d_scale, pos)
+}
+
+gmcb_mh_meanzero_nodebug <- function(y, d_init, gamma_init, alpha_d_init, gamma_prior, alpha_prior, tau_prior, iter, d_scale, alpha_d_scale, pos) {
+    .Call(`_GMCB_gmcb_mh_meanzero_nodebug`, y, d_init, gamma_init, alpha_d_init, gamma_prior, alpha_prior, tau_prior, iter, d_scale, alpha_d_scale, pos)
+}
+
 gmcb_smn_debug <- function(y, x, b_init, d_init, gamma_init, alpha_b_init, alpha_d_init, lambda_init, tau_init, gamma_prior, alpha_prior, lambda_prior, tau_prior, iter, alpha_b_scale, alpha_d_scale, pos) {
     .Call(`_GMCB_gmcb_smn_debug`, y, x, b_init, d_init, gamma_init, alpha_b_init, alpha_d_init, lambda_init, tau_init, gamma_prior, alpha_prior, lambda_prior, tau_prior, iter, alpha_b_scale, alpha_d_scale, pos)
 }
 
 gmcb_smn_nodebug <- function(y, x, b_init, d_init, gamma_init, alpha_b_init, alpha_d_init, lambda_init, tau_init, gamma_prior, alpha_prior, lambda_prior, tau_prior, iter, alpha_b_scale, alpha_d_scale, pos) {
     .Call(`_GMCB_gmcb_smn_nodebug`, y, x, b_init, d_init, gamma_init, alpha_b_init, alpha_d_init, lambda_init, tau_init, gamma_prior, alpha_prior, lambda_prior, tau_prior, iter, alpha_b_scale, alpha_d_scale, pos)
+}
+
+gmcb_smn_meanzero_debug <- function(y, d_init, gamma_init, alpha_d_init, tau_init, gamma_prior, alpha_prior, tau_prior, iter, alpha_d_scale, pos) {
+    .Call(`_GMCB_gmcb_smn_meanzero_debug`, y, d_init, gamma_init, alpha_d_init, tau_init, gamma_prior, alpha_prior, tau_prior, iter, alpha_d_scale, pos)
+}
+
+gmcb_smn_meanzero_nodebug <- function(y, d_init, gamma_init, alpha_d_init, tau_init, gamma_prior, alpha_prior, tau_prior, iter, alpha_d_scale, pos) {
+    .Call(`_GMCB_gmcb_smn_meanzero_nodebug`, y, d_init, gamma_init, alpha_d_init, tau_init, gamma_prior, alpha_prior, tau_prior, iter, alpha_d_scale, pos)
 }
 

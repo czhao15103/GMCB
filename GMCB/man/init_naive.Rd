@@ -75,8 +75,8 @@ A list including the following componets:
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{\link{init_freqbridge_nocovariates}}, \code{\link{nuisance_init}}, 
-\code{\link{ols_init}}
+\code{\link{init_freqbridge_nocovariates}}, \code{\link{nuisance.init}}, 
+\code{\link{ols.init}}
 }
 \examples{
 

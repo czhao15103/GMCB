@@ -3,7 +3,7 @@
 
 #### method of moments prior elicitation for gamma ####
 
-gamma.mom <- function(gamma) {
+gamma_mom <- function(gamma) {
   stopifnot(all(gamma > 0))
   
   gamma.sm <- mean(gamma)
@@ -165,7 +165,7 @@ ols.covariance <- function(y) {
   }
   
   # gamma prior
-  gamma.prior <- gamma.mom(gamma.init)
+  gamma.prior <- gamma_mom(gamma.init)
   
   return(list(delta.init = delta.init, gamma.init = gamma.init, 
               gamma.prior = gamma.prior))
@@ -207,7 +207,7 @@ ols.init <- function(y, x) {
   }
   
   # gamma prior
-  gamma.prior <- gamma.mom(gamma.init)
+  gamma.prior <- gamma_mom(gamma.init)
   
   return(list(b.init = as.numeric(matrixcalc::vec(b.init.mat)), 
               delta.init = delta.init, 
@@ -233,7 +233,7 @@ init_naive <- function(y, x, lambda.prior, tau.prior, alpha.prior) {
   gamma.init <- apply(y, 2, var)
   
   # method of moments gamma prior
-  gamma.prior <- gamma.mom(gamma.init)
+  gamma.prior <- gamma_mom(gamma.init)
   
   return(list(b.init = b.init, delta.init = d.init,
               lambda.init = nuisance$lambda.init, tau.init = nuisance$tau.init,
@@ -325,7 +325,7 @@ init_naive <- function(y, x, lambda.prior, tau.prior, alpha.prior) {
 #     gamma.init[c] <- mean((y[,c] - y[,1:(c-1),drop=FALSE] %*% as.matrix(fit.c))^2)
 #   }
 #   
-#   gamma.prior <- gamma.mom(gamma.init)
+#   gamma.prior <- gamma_mom(gamma.init)
 #   
 #   out <- list(delta.init = delta.init, gamma.init = gamma.init, gamma.prior = gamma.prior,
 #               alpha.b.init = min.par[1], alpha.d.init = min.par[1], 
@@ -412,7 +412,7 @@ init_freqbridge_nocovariates <- function(y, alpha.prior, nfolds = 5, nalpha = 10
     gamma.init[c] <- mean((y[,c] - y[,1:(c-1),drop=FALSE] %*% as.matrix(fit.c))^2)
   }
   
-  gamma.prior <- gamma.mom(gamma.init)
+  gamma.prior <- gamma_mom(gamma.init)
   
   out <- list(delta.init = delta.init, gamma.init = gamma.init, gamma.prior = gamma.prior,
               alpha.b.init = min.par[1], alpha.d.init = min.par[1], 

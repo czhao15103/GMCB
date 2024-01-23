@@ -21,7 +21,7 @@ Description: Simultaneous mean and covariance estimation for multivariate regres
              with the generalized mean-covariance bridge (GMCB) prior. Implements
              both the GMCB-MH algorithm and the GMCB-SMN algorithm.
 License: GPL (>= 3)
-Depends: R (>= 3.1.0), parallel, doParallel, doRNG, Matrix
+Depends: R (>= 3.1.0), foreach, parallel, doParallel, doRNG, Matrix
 Imports: Rcpp (>= 1.0.8.3), matrixcalc, mcmcse
 LinkingTo: Rcpp, RcppArmadillo
 Suggests: mvtnorm
