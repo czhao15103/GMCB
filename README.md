@@ -10,7 +10,7 @@ can be installed with `devtools::install_github`:
 ```r
 library(devtools)
 devtools::install_github(repo = "czhao15103/GMCB/GMCB")
-```r
+```
 
 #### Simulations
 
