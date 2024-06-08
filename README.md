@@ -1,7 +1,7 @@
 This repository includes an R package for implementing joint mean-covariance estimation using 
 the generalized mean-covariance bridge (GMCB) prior and code for replicating the simulations
 and corresponding plots in 
-_[A Bayesian Generalized Bridge Regression Approach to Covariance Estimation in the Presence of Covariates]_{https://arxiv.org/abs/2406.00906}.
+_[A Bayesian Generalized Bridge Regression Approach to Covariance Estimation in the Presence of Covariates]{https://arxiv.org/abs/2406.00906}_.
 
 #### GMCB
 
