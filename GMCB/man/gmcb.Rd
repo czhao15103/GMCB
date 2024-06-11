@@ -100,14 +100,32 @@ specifies the algorithm to run, either \code{MH} or \code{SMN}. Defaults to \cod
       \item \code{initial.values}, if provided, must have named elements 
       \code{b}, \code{delta}, \code{gamma}, \code{alpha.b}, and \code{alpha.d}.
       \item \code{rw.scale} must have named elements \code{b}, \code{delta}, \code{alpha.b}, 
-      and \code{alpha.d}
+      and \code{alpha.d}.
     }
     \item If \code{algorithm = SMN},
     \itemize{
       \item \code{initial.values}, if provided, must have named elements 
       \code{b}, \code{delta}, \code{gamma}, \code{lambda}, \code{tau}, \code{alpha.b}, 
       and \code{alpha.d}.
-      \item \code{rw.scale} must have named elements \code{alpha.b} and \code{alpha.d}
+      \item \code{rw.scale} must have named elements \code{alpha.b} and \code{alpha.d}.
+    }
+  }
+  When \code{meanzero = TRUE}, the required elements are as follows:
+  \itemize{
+    \item \code{priors} must have named elements \code{tau} and \code{alpha}.
+    The element \code{gamma} is optional; if excluded from the list provided to \code{gmcb},
+    the function will use the method of moments to specify the prior.
+    \item If \code{algorithm = MH}, 
+    \itemize{
+      \item \code{initial.values}, if provided, must have named elements 
+      \code{delta}, \code{gamma}, and \code{alpha.d}.
+      \item \code{rw.scale} must have named elements \code{delta} and \code{alpha.d}.
+    }
+    \item If \code{algorithm = SMN},
+    \itemize{
+      \item \code{initial.values}, if provided, must have named elements 
+      \code{delta}, \code{gamma}, \code{tau}, and \code{alpha.d}.
+      \item \code{rw.scale} must have named element \code{alpha.d}.
     }
   }
   
