@@ -89,7 +89,7 @@ specifies the algorithm to run, either \code{MH} or \code{SMN}. Defaults to \cod
   parameters and penalty exponent parameters are initialized from the provided priors. 
   
   The required elements for \code{initial.values}, \code{priors}, and \code{rw.scale}
-  depend on the mean structure being estimated, as well as the selected algorithm.
+  depend on the mean structure being estimated, as well as the selected algorithm. 
   When \code{meanzero = FALSE},
   \itemize{
     \item \code{priors} must have named elements \code{lambda}, \code{tau}, and \code{alpha}.
@@ -126,6 +126,45 @@ specifies the algorithm to run, either \code{MH} or \code{SMN}. Defaults to \cod
       \item \code{initial.values}, if provided, must have named elements 
       \code{delta}, \code{gamma}, \code{tau}, and \code{alpha.d}.
       \item \code{rw.scale} must have named element \code{alpha.d}.
+    }
+  }
+  The dimensions of the elements in \code{initial.values}, \code{priors}, and \code{rw.scale} 
+  should be as follows:
+  \itemize{
+    \item \code{priors} 
+    \itemize{
+      \item \code{lambda}: either a vector of length 4 or a 4 by \emph{pq} matrix.
+      If a vector, the first two elements specify the shape and rate of the first Gamma component,
+      and the last two the shape and rate of the second Gamma component. If a matrix, the first two rows
+      specify the shape and rate of the first Gamma component, and the last two rows the shape and rate of
+      the second gamma component.
+      \item \code{tau}: either a vector of length 4 or a 4 by \emph{q(q-)/2} matrix.
+      If a vector, the first two elements specify the shape and rate of the first Gamma component,
+      and the last two the shape and rate of the second Gamma component. If a matrix, the first two rows
+      specify the shape and rate of the first Gamma component, and the last two rows the shape and rate of
+      the second gamma component.
+      \item \code{alpha}: a vector of length 2 with the first element giving the lower bound and the second 
+      the upper bound of the uniform prior.
+      \item \code{gamma}: a vector of length 2, with the first element giving the shape and the second the rate
+      of the inverse Gamma prior.
+    }
+    \item \code{initial.values} 
+    \itemize{
+      \item \code{b}: vector of length \emph{pq}, arranged in the order of \code{vec(B)}.
+      \item \code{lambda}: either a scalar or a vector of length \emph{pq}.
+      \item \code{alpha.b}: scalar.
+      \item \code{delta}: vector of length \emph{q(q-1)/2}, arranged in the order of \code{vechrow(T)}.
+      \item \code{tau}: either a scalar or a vector of length \emph{q(q-1)/2}.
+      \item \code{gamma}: vector of length \emph{q}.
+      \item \code{alpha.d}: scalar.
+    }
+    \item \code{rw.scale}
+    \itemize{
+      \item \code{b}: either a scalar or a vector of length \emph{pq}, arranged in the order of \code{vec(B)}.
+      \item \code{delta}: either a scalar or a vector of length \emph{q(q-1)/2}, 
+      arranged in the order of \code{vechrow(T)}.
+      \item \code{alpha.b}: scalar
+      \item \code{alpha.d}: scalar
     }
   }
   
