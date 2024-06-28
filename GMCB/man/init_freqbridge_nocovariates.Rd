@@ -59,7 +59,7 @@ given by \code{2^((1:nlambda) - 6)}, which was used by Park and Yoon (2011)
 in their simulations.
 }
 \value{
-A list including the following componets:
+A list including the following components:
   \item{delta.init}{a vector of length \emph{q(q-1)/2}, the initializing values
                     for the covariance parameters with interpretations as 
                     regression coefficients.}
