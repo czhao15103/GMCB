@@ -218,6 +218,8 @@ variates generated during sampling.
   
   Xiang, D. (2020) \emph{Fully Bayesian penalized regression with a generalized bridge prior}.
   University of Minnesota.
+  
+  Zhao, C., Xiang, D., Jones, G. L., & Rothman, A. J. (2024). A Bayesian Generalized Bridge Regression Approach to Covariance Estimation in the Presence of Covariates. arXiv preprint arXiv:2406.00906.
 }
 %\author{
 %The code for sampling an exponentially-tilted postive stable random variable was written by Marius Hofert and Martin Maechler. The rest of the algorithm was written by Christina Zhao.
