@@ -40,6 +40,7 @@ The generalized bridge (GBR) prior for a regression coefficient \eqn{\beta} is a
     \sigma^2 \sim \text{IG}(a,b) \\
     \alpha \sim \text{Unif}(k_1, k_2)
   }
+This function plots the marginal density of \eqn{\beta} when \eqn{\sigma^2=1}.
 }
 \value{
 A function that takes as its argument possible values of the regression coefficient \code{beta}.
