@@ -32,6 +32,11 @@ mSSL$time
 #### Frobenius loss ####
 hsghs <- read.csv("hsghs_n100p5q5_DP2002_3A_XJ2019_1.csv")
 
+# mle
+b.ols <- lapply(1:iter, function(i) solve(t(x) %*% x, t(x) %*% y[[i]]))
+hatmat <- diag(n) - x %*% solve(crossprod(x)) %*% t(x)
+omega.ols <- lapply(1:iter, function(i) n * solve(t(y[[i]]) %*% hatmat %*% y[[i]]))
+
 # contribution of regression component compared to precision component
 loss.postmeanb.mh <-  sapply(1:iter,
                              function(x) sum((mh$ests[[x]]$b.postmean - b)^2))
@@ -69,18 +74,28 @@ loss.steinquadomega.mh <-  sapply(1:iter,
 loss.steinquadomega.smn <-  sapply(1:iter, 
                                   function(x) sum((smn$ests[[x]]$omega.stein - true.prec)^2))
 
+# classical estimators
+loss.ols <- sapply(1:iter, 
+                   function(x) sum((b.ols[[x]] - b)^2))
+
+loss.omegaols <- sapply(1:iter, 
+                        function(x) sum((omega.ols[[x]] - true.prec)^2))
+
+
 # posterior mean loss contribution
 postmean <- data.frame(mh.b = (loss.postmeanb.mh), mh.omega = (loss.postmeanomega.mh),
                        smn.b = (loss.postmeanb.smn), smn.omega = (loss.postmeanomega.smn),
                        mSSL_DCPE.b = (loss.b.mSSL_DCPE), mSSL_DCPE.omega = (loss.omega.mSSL_DCPE),
                        mSSL_DPE.b = (loss.b.mSSL_DPE), mSSL_DPE.omega = (loss.omega.mSSL_DPE),
-                       hsghs.b = (hsghs$f_losspostmeanb), hsghs.omega = (hsghs$f_loss_postmeanomega))
+                       hsghs.b = (hsghs$f_losspostmeanb), hsghs.omega = (hsghs$f_loss_postmeanomega),
+                       ols = loss.ols, omegaols = loss.omegaols)
 
 steinquad <- data.frame(mh.b = (loss.steinquadb.mh), mh.omega = (loss.steinquadomega.mh),
                         smn.b = (loss.steinquadb.smn), smn.omega = (loss.steinquadomega.smn),
                         mSSL_DCPE.b = (loss.b.mSSL_DCPE), mSSL_DCPE.omega = (loss.omega.mSSL_DCPE),
                         mSSL_DPE.b = (loss.b.mSSL_DPE), mSSL_DPE.omega = (loss.omega.mSSL_DPE),
-                        hsghs.b = (hsghs$f_loss_quadb), hsghs.omega = (hsghs$f_loss_steinomega))
+                        hsghs.b = (hsghs$f_loss_quadb), hsghs.omega = (hsghs$f_loss_steinomega),
+                        ols = loss.ols, omegaols = loss.omegaols)
 
 colMeans(postmean)
 apply(postmean, 2, function(x) sd(x)/sqrt(iter))
