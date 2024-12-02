@@ -11,7 +11,9 @@ for (i in 1:length(lambda)) {
     f <- alpha[j]/2
     s <- (1/lambda[i])^(2/alpha[j])
     curve(dpowexp(x, m = 0, s = s, f = f), xlim = c(-3, 3), ylim = c(0, 2),
-          main = bquote(alpha~"="~.(alpha[j])~","~lambda~"="~.(lambda[i])), ylab = "")
+          main = bquote(alpha~"="~.(alpha[j])~","~lambda~"="~.(lambda[i])), ylab = "",
+          xlab = bquote(beta[j]),
+          cex.axis = 1.75, cex.lab = 1.75, cex.main = 3)
   }
 }
 
