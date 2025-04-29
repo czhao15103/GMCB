@@ -41,3 +41,24 @@ corresponding methods and data scenarios.
 	- Files with names that begin with `acf_` produce acf plots for the simulation scenarios.
 - MATLAB files
 	- These files were used to implement HS-GHS and GHS.
+
+#### Sitka
+
+This subdirectory contains files to replicate the Sitka spruce example in the paper.
+
+A brief description of the files is given below.
+
+- Data preparation and plotting
+	- Sitka.R
+- Model fitting
+	- GMCBMH_1988.R
+ 	- GMCBSMN_1988.R
+  	- The `.rds` files contain the starting parameters for this code.
+- Leave-one-out (LOO) posterior predictive checks
+	- LOOPPC_MH_0112001.R
+ 	- LOOPPC_MH_114005.R
+  	- LOOPPC_SMN_0112001.R
+  	- LOOPPC_SMN_114005.R
+- Results files
+	- LOOPPC_Results.R examines the LOO posterior predictive check results
+ 	- Sitka_Results.R examines the model output from the code listed under "Model fitting"
